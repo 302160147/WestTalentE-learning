@@ -20,6 +20,79 @@
         {% endif %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg  bg-primary bg-opacity-75">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('/images/logo.svg') }}" class="img-fluid" alt="West Talent" width="200"> </a>
+                <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('/images/mondriaan.png') }}" class="img-fluid" alt="ROC Mondriaan" width="150"> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav col-10">
+                        <li class="nav-item">
+                            <button class="border rounded">
+                                <a class="nav-link">Home</a>
+                            </button>
+                        </li>
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <button class="border rounded">
+                                    <a class="nav-link">Profiel</a>
+                                </button>
+                            </li>
+                        {% endif %}
+                        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                            <li class="nav-item">
+                                <button class="border rounded">
+                                    <a class="nav-link">Docent</a>
+                                </button>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="navbar-nav col-1">
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <button class="border rounded">
+                                    <a class="nav-link">Log uit</a>
+                                </button>
+                            </li>
+                        {% else %}
+                            <li class="nav-item m-3">
+                                <button class="border rounded">
+                                    <a class="nav-link">Register</a>
+                                </button>
+                            </li>
+                            <li class="nav-item m-3">
+                                <button class="border rounded">
+                                    <a class="nav-link">Login</a>
+                                </button>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
         {% block body %}{% endblock %}
+        <div class="container-fluid bg-primary bg-opacity-75 position-absolute">
+            <div class="row">
+                <div class="col-9">
+                    <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('/images/logo.svg') }}" class="img-fluid" alt="West Talent" width="200"> </a>
+                    <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('/images/mondriaan.png') }}" class="img-fluid" alt="ROC Mondriaan" width="150"> </a>
+                </div>
+                <div class="col-2">
+                    <ul>
+                        {% if app.user %}
+                            <li class="list-group-item"><a class="btn">Profile</a></li>
+                        {% else %}
+                            <li class="list-group-item"><a class="btn">Login</a></li>
+                            <li class="list-group-item"><a class="btn">Register</a></li>
+                        {% endif %}
+                        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                            <li class="list-group-item"><a class="btn">Admin</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
