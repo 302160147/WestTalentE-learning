@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <h1 class="text-black mb-5">Niveaus</h1>
+
+    {% for niveau in 2..4 %}
+
+        <div class="mb-5">
+
+            <h2 class="text-black mb-3">
+                Niveau {{ niveau }}
+            </h2>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                {% for module in 1..4 %}
+
+                    <a href="{{ path('app_module', {
+                        niveau: niveau,
+                        module: module
+                    }) }}"
+                       class="btn btn-outline-dark px-4 py-3">
+
+                        Module {{ module }}
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
