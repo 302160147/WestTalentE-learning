@@ -34,10 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Username = null;
+    private ?string $firstName = null;
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastName = null;
 
     public function getId(): ?int
     {
@@ -110,18 +113,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
-    public function getUsername(): ?string
+    public function getfirstName(): ?string
     {
-        return $this->Username;
+        return $this->firstName;
     }
 
-    public function setUsername(string $Username): static
+    public function setfirstName(string $firstName): static
     {
-        $this->Username = $Username;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -134,6 +137,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastname(string $Lastname): static
+    {
+        $this->lastName = $Lastname;
 
         return $this;
     }

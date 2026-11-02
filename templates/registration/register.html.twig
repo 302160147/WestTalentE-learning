@@ -6,7 +6,7 @@
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
-    <div style="height: 632px" class="bg-info bg-gradient bg-opacity-50">
+    <div style="height: 640px" class="bg-info bg-gradient bg-opacity-50">
         <div class="container">
             <div class="row justify-content-center">
                 <div class=" text-center">
@@ -16,11 +16,17 @@
 
                         {{ form_start(registrationForm) }}
                         {{ form_row(registrationForm.email) }}
-                    <br>
-                        {{ form_row(registrationForm.username) }}
-                    <br>
+                            <br>
+                        {{ form_row(registrationForm.firstName, {
+                            label: 'Voornaam'
+                        }) }}
+                            <br>
+                        {{ form_row(registrationForm.lastName, {
+                            label: 'Achternaam'
+                        }) }}
+                            <br>
                         {{ form_row(registrationForm.plainPassword, {
-                            label: 'Password'
+                            label: 'Wachtwoord'
                         }) }}
                         {{ form_row(registrationForm.agreeTerms) }}
 

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}West Talent E-Learning{% endblock %}
+
+{% block body %}
+    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
+        <div class="container w-100">
+            <div class="row">
+                <h1>Welkom {{ app.user.firstName }} {{ app.user.lastName }}</h1>
+                    <div class="col-6">
+                        <h2>Informatie</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">Gebruikers naam: {{ app.user.firstName }} {{ app.user.lastName }}</li>
+                            <li class="list-group-item">E-mail: {{ app.user.email }}</li>
+                            <button class="border rounded bg-info">
+                                <a href="{{ path('app_profile_update',{'id':app.user.id}) }}" class="nav-link">Update</a>
+                            </button>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <h2>Vakken</h2>
+                        <h4>Burgerschap</h4>
+                        <div class="btn-group">
+                            <div class="dropdown m-3">
+                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                   Niveau 2
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown m-3">
+                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Niveau 3
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown m-3">
+                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Niveau 4
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
+                                </ul>
+                            </div>
+                        </div>
+{#                        sectie voor Nederlands en Engels#}
+{#                        <h4>Nederlands</h4>#}
+{#                        <div class="dropdown">#}
+{#                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                                Dropdown link#}
+{#                            </a>#}
+
+{#                            <ul class="dropdown-menu">#}
+{#                                <li><a class="dropdown-item" href="#">Action</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Another action</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                        <h4>Engels</h4>#}
+{#                        <div class="dropdown">#}
+{#                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                                Dropdown link#}
+{#                            </a>#}
+
+{#                            <ul class="dropdown-menu">#}
+{#                                <li><a class="dropdown-item" href="#">Action</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Another action</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+{#                            </ul>#}
+{#                        </div>#}
+                    </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

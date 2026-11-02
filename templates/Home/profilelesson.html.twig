@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}West Talent E-Learning{% endblock %}
+
+{% block body %}
+    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
+        <div class="container w-100">
+            <div class="row">
+                <h1>Welkom {{ app.user.username }}</h1>
+                <div class="col-6">
+                    <h2>Informatie</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ app.user.username }}</li>
+                        <li class="list-group-item">{{ app.user.email }}</li>
+                        <li class="list-group-item">Je informatie updaten</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <h2>Lessen</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
