@@ -11,8 +11,9 @@
                     </div>
                     <div class="col-12 text-center bg-info-subtle border m-3">
                         {% if app.user %}
-                            <a class="btn btn-info m-3">Profile</a>
-                        {% else %}
+                            <a href="#">
+                                <button class="border rounded bg-info">Profiel</button>
+                            </a>
                             <div>
                                 <div class="card" style="width: 18rem;">
                                     <img src="{{ asset('/images/Maatschappij.jpg') }}" class="card-img-top" alt="Burgerschap">
@@ -23,6 +24,10 @@
                                     </div>
                                 </div>
                             </div>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">
+                                <button class="border rounded bg-info">Inloggen</button>
+                            </a>
                         {% endif %}
                     </div>
                 </div>
