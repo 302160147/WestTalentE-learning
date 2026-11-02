@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <h1 class="mb-4">Studenten overzicht</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5 class="mb-3">Alle studenten</h5>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>E-mailadres</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.email }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">Er zijn nog geen studenten.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
