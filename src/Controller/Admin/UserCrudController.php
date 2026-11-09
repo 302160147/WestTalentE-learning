@@ -38,11 +38,8 @@ class UserCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->onlyOnIndex();
 
-        yield TextField::new('firstName')
-            ->setLabel('Voornaam');
-
-        yield TextField::new('lastName')
-            ->setLabel('Achternaam');
+        yield TextField::new('FullName')
+            ->setLabel('Naam');
 
         yield EmailField::new('email')
             ->setLabel('email');

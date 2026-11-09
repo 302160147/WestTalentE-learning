@@ -48,6 +48,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    public function getFullName(): ?string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
