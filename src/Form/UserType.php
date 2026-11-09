@@ -27,6 +27,11 @@ class UserType extends AbstractType
             ])
             ->add('firstName')
             ->add('lastName')
+//            ->add('roles', ChoiceType::class, [
+//                'choices' => ['TEACHER' => 'ROLE_TEACHER', 'STUDENT' => 'ROLE_STUDENT'],
+//                'expanded' => true,
+//                'multiple' => false,
+//            ])
         ;
     }
 
