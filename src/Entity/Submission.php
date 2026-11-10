@@ -26,6 +26,15 @@ class Submission
     #[ORM\Column]
     private ?\DateTimeImmutable $submittedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    private ?Assignment $assignment = null;
+
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    private ?AnswerOption $answerOption = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +84,42 @@ class Submission
     public function setSubmittedAt(\DateTimeImmutable $submittedAt): static
     {
         $this->submittedAt = $submittedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAssignment(): ?Assignment
+    {
+        return $this->assignment;
+    }
+
+    public function setAssignment(?Assignment $assignment): static
+    {
+        $this->assignment = $assignment;
+
+        return $this;
+    }
+
+    public function getAnswerOption(): ?AnswerOption
+    {
+        return $this->answerOption;
+    }
+
+    public function setAnswerOption(?AnswerOption $answerOption): static
+    {
+        $this->answerOption = $answerOption;
 
         return $this;
     }

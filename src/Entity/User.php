@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,6 +44,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, Submission>
+     */
+    #[ORM\OneToMany(targetEntity: Submission::class, mappedBy: 'user')]
+    private Collection $submissions;
+
+    /**
+     * @var Collection<int, Studentprogress>
+     */
+    #[ORM\OneToMany(targetEntity: Studentprogress::class, mappedBy: 'user')]
+    private Collection $studentProgresses;
+
+    public function __construct()
+    {
+        $this->submissions = new ArrayCollection();
+        $this->studentProgresses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,6 +175,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $Lastname): static
     {
         $this->lastName = $Lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Submission>
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+
+    public function addSubmission(Submission $submission): static
+    {
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+            $submission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubmission(Submission $submission): static
+    {
+        if ($this->submissions->removeElement($submission)) {
+            // set the owning side to null (unless already changed)
+            if ($submission->getUser() === $this) {
+                $submission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Studentprogress>
+     */
+    public function getStudentProgresses(): Collection
+    {
+        return $this->studentProgresses;
+    }
+
+    public function addStudentProgress(Studentprogress $studentProgress): static
+    {
+        if (!$this->studentProgresses->contains($studentProgress)) {
+            $this->studentProgresses->add($studentProgress);
+            $studentProgress->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudentProgress(Studentprogress $studentProgress): static
+    {
+        if ($this->studentProgresses->removeElement($studentProgress) && $studentProgress->getUser() === $this) {
+            $studentProgress->setUser(null);
+        }
 
         return $this;
     }

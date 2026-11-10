@@ -22,6 +22,12 @@ class Studentprogress
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'studentProgress')]
+    private ?Module $module = null;
+
+    #[ORM\ManyToOne(inversedBy: 'studentProgresses')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +65,30 @@ class Studentprogress
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getModule(): ?Module
+    {
+        return $this->module;
+    }
+
+    public function setModule(?Module $module): static
+    {
+        $this->module = $module;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
