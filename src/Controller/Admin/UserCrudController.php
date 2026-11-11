@@ -71,8 +71,8 @@ class UserCrudController extends AbstractCrudController
                 'Teacher' => 'ROLE_TEACHER',
                 'Student' => 'ROLE_STUDENT',
             ]);
-        yield IdField::new('totalLessons');
-        yield IdField::new('totalLessons');
+        yield IdField::new('totalLessons')
+            ->onlyOnIndex();
 
     }
 }
