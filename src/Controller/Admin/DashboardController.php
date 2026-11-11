@@ -21,7 +21,7 @@ class DashboardController extends AbstractDashboardController
     {
 
         return $this->render('admin/adminhome.html.twig');
-        return parent::index();
+
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //

@@ -56,6 +56,13 @@
                                     </a>
                             </li>
                         {% endif %}
+                        {% if app.user and 'ROLE_TEACHER' in app.user.roles %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('teacher') }}">
+                                    <button class="border rounded px-5 py-2">Admin</button>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="navbar-nav col-4">
                         {% if app.user %}
