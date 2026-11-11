@@ -41,20 +41,12 @@ class ModuleCrudController extends AbstractCrudController
         yield TextField::new('name')
             ->setLabel('Naam');
 
-//        yield AssociationField::new('vak')
-//            ->setLabel('Vak');
-//
-//        yield ChoiceField::new('niveau')
-//            ->setLabel('Niveau')
-//            ->renderAsBadges([
-//                '2' => 'danger',
-//                '3' => 'warning',
-//                '4' => 'secondary',
-//            ])
-//            ->setChoices([
-//                '2' => '2',
-//                '3' => '3',
-//                '4' => '4',
-//            ]);
+        yield AssociationField::new('vak')->autocomplete(
+            callback: static fn (vak $module): string => sprintf('%s', $module->getName()),
+        );
+
+        yield AssociationField::new('niveau')->autocomplete(
+            callback: static fn (niveau $module): string => sprintf('%s', $module->getNiveau()),
+        );
     }
 }
