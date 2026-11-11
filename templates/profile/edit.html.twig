@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
+        <div class="container w-100">
+            <h1>Edit wachtwoord</h1>
+
+            {{ include('profile/_form.html.twig', {'button_label': 'Update'}) }}
+            <a href="{{ path('app_profile') }}">
+                <button class="border rounded bg-info">back</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
