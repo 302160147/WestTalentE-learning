@@ -5,30 +5,44 @@
 <div class="container bg-white py-5">
 
     <h1 class="text-dark mb-5">Niveaus</h1>
-    {% for niveau in 2..4 %}
+
+    {% for niveau in niveaus %}
+
         <div class="card bg-white shadow-sm rounded-3 border mb-4">
 
             <div class="card-body p-4">
 
                 <h2 class="text-dark mb-4">
-                    Niveau {{ niveau }}
+                    {{ niveau.niveau }}
                 </h2>
+
                 <div class="d-flex flex-wrap gap-3">
 
-                    {% for module in 1..4 %}
+                    {% for module in niveau.modules %}
 
                         <a href="{{ path('app_module', {
-                            niveau: niveau,
-                            module: module  }) }}"
+                            niveau: niveau.id,
+                            module: module.id
+                        }) }}"
                            class="btn btn-primary px-4 py-3">
 
-                            Module {{ module }}
+                            {{ module.name }}
+
                         </a>
 
-                      {% endfor %}
+                    {% else %}
+
+                        <p>Geen modules gevonden.</p>
+
+                    {% endfor %}
+
                 </div>
+
             </div>
         </div>
+
     {% endfor %}
+
 </div>
+
 {% endblock %}
