@@ -11,21 +11,23 @@
                     </div>
                     <div class="col-12 text-center bg-info-subtle border m-3">
                         {% if app.user %}
-                            <a href="#">
+                            <a href="{{ path('app_profile') }}">
                                 <button class="border rounded bg-info">Profiel</button>
                             </a>
-                            {% for vak in vakken %}
-                                <div>
-                                    <div class="card" style="width: 18rem;">
-                                        <img src="{{ vak.image }}" class="card-img-top" alt="Burgerschap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ vak.name }}</h5>
-                                            <p class="card-text">{{ vak.description }}</p>
-                                            <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
+                            <div class="row align-items-center">
+                                {% for vak in vakken %}
+                                    <div class="col-4 ">
+                                        <div class="card " style="width: 18rem;">
+                                            <img src="{{ vak.image }}" class="card-img-top" alt="Burgerschap">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ vak.name }}</h5>
+                                                <p class="card-text">{{ vak.description }}</p>
+                                                <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         {% else %}
                             <a href="{{ path('app_login') }}">
                                 <button class="border rounded bg-info">Inloggen</button>
