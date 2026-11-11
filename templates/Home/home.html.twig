@@ -14,16 +14,18 @@
                             <a href="#">
                                 <button class="border rounded bg-info">Profiel</button>
                             </a>
-                            <div>
-                                <div class="card" style="width: 18rem;">
-                                    <img src="{{ asset('/images/Maatschappij.jpg') }}" class="card-img-top" alt="Burgerschap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Burgerschap</h5>
-                                        <p class="card-text">De Burgerschap niveau's, modules en lessen</p>
-                                        <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
+                            {% for vak in vakken %}
+                                <div>
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="{{ vak.image }}" class="card-img-top" alt="Burgerschap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ vak.name }}</h5>
+                                            <p class="card-text">{{ vak.description }}</p>
+                                            <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% else %}
                             <a href="{{ path('app_login') }}">
                                 <button class="border rounded bg-info">Inloggen</button>

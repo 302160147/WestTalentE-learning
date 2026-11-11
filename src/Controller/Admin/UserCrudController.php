@@ -56,8 +56,7 @@ class UserCrudController extends AbstractCrudController
                 'mapped' => false,
             ])
             ->setRequired($pageName === Crud::PAGE_NEW)
-            ->onlyOnForms()
-        ;
+            ->onlyOnForms();
 
         yield ChoiceField::new('roles')
             ->setLabel('rol')
@@ -72,5 +71,8 @@ class UserCrudController extends AbstractCrudController
                 'Teacher' => 'ROLE_TEACHER',
                 'Student' => 'ROLE_STUDENT',
             ]);
+        yield IdField::new('totalLessons');
+        yield IdField::new('totalLessons');
+
     }
 }

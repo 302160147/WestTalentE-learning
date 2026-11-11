@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Vak;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $vakken = $entityManager->getRepository(Vak::class)->findAll();
         return $this->render('home/home.html.twig',[
-        'controller_name' => 'PokedexController',
+        'vakken' => $vakken,
     ]);
     }
     #[Route('/Profiel', name: 'app_profile')]
