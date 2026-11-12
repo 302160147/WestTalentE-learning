@@ -32,17 +32,27 @@ class AnswerOptionCrudController extends AbstractCrudController
             ->setLabel('Antwoord');
 
         yield ChoiceField::new('optionText')->renderExpanded()
-            ->allowMultipleChoices()
+//            ->allowMultipleChoices()
             ->setLabel('Meerkeuze vraag')
+            ->renderAsBadges([
+                'Meerkeuze vraag' => 'info',
+                'Open vraag' => 'primary',
+                'Juist onjuist vraag' => 'success',
+            ])
+            ->setChoices([
+                'Meerkeuze vraag' => 'Meerkeuze vraag',
+                'Open vraag' => 'Open vraag',
+                'Juist onjuist vraag' => 'Juist onjuist vraag',
+            ])
             ->hideOnIndex();
 
-        yield TextareaField::new('optionText')
-            ->setLabel('Open vraag')
-            ->hideOnIndex();
-
-        yield ChoiceField::new('optionText')->renderExpanded()
-            ->setLabel('Juist onjuist vraag')
-            ->hideOnIndex();
+//        yield TextareaField::new('optionText')
+//            ->setLabel('Open vraag')
+//            ->hideOnIndex();
+//
+//        yield ChoiceField::new('optionText')->renderExpanded()
+//            ->setLabel('Juist onjuist vraag')
+//            ->hideOnIndex();
 
         yield IntegerField::new('isCorrect')
             ->setLabel('Is de vraag goed of niet?');
