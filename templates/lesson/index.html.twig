@@ -33,7 +33,7 @@
                             {{ loop.index }}. {{ assignment.question }}
                         </h5>
 
-                        {% if assignment.questionType == 'multiple_choice' %}
+                        {% if assignment.questionType == 'Meerkeuze' %}
 
                             {% for option in assignment.answerOptions %}
 
@@ -51,7 +51,7 @@
                                 </div>
                             {% endfor %}
 
-                        {% elseif assignment.questionType == 'open' %}
+                        {% elseif assignment.questionType == 'Open vraag' %}
 
                             <textarea class="form-control"
                                       rows="4"
