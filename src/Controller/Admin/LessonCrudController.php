@@ -7,11 +7,13 @@ use App\Entity\Module;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class LessonCrudController extends AbstractCrudController
 {
@@ -38,7 +40,7 @@ class LessonCrudController extends AbstractCrudController
         yield TextField::new('description')
             ->setLabel('Beschrijving');
 
-        yield TextField::new('contents')
+        yield TextareaField::new('contents')->renderAsHtml()
             ->setLabel('Inhoud');
 
         yield AssociationField::new('module')->autocomplete(
