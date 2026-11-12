@@ -26,7 +26,7 @@ class AssignmentCrudController extends AbstractCrudController
             ->onlyOnIndex();
 
         yield TextareaField::new('question')->renderAsHtml()
-            ->setLabel('Vraag');
+            ->setLabel('Wat is de vraag');
 
         yield ChoiceField::new('questionType')->autocomplete()
             ->setLabel('Soort vraag')
