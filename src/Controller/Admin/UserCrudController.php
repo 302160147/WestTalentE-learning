@@ -39,7 +39,16 @@ class UserCrudController extends AbstractCrudController
             ->onlyOnIndex();
 
         yield TextField::new('FullName')
-            ->setLabel('Naam');
+            ->setLabel('Naam')
+            ->onlyOnIndex();
+
+        yield TextField::new('firstName')
+            ->setLabel('Voornaam')
+            ->hideOnIndex();
+
+        yield TextField::new('lastName')
+            ->setLabel('Achternaam')
+            ->hideOnIndex();
 
         yield EmailField::new('email')
             ->setLabel('email');
