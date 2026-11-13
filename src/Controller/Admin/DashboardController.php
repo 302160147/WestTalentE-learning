@@ -54,6 +54,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(LessonCrudController::class, 'Lessen', 'fa fa-book');
         yield MenuItem::linkTo(AssignmentCrudController::class, 'Opdrachten', 'fa fa-tags');
         yield MenuItem::linkTo(AnswerOptionCrudController::class, 'Vragen', 'fa fa-tasks');
+        yield MenuItem::linkTo(SubmissionCrudController::class, 'Feedback', 'fa fa-check');
         // yield MenuItem::linkTo(SomeCrudController::class, 'The Label', 'fas fa-list');
     }
 

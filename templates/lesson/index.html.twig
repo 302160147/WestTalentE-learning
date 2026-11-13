@@ -9,7 +9,6 @@
     </h1>
     <div class="row g-4">
         <div class="col-lg-7">
-
             <p class="text-muted">
                 {{ lesson.description }}
             </p>
@@ -17,74 +16,73 @@
             <div class="text-dark">
                 {{ lesson.contents|nl2br }}
             </div>
-
         </div>
-        <div class="col-lg-5">
+            <div class="col-lg-5">
+                <form method="post">
+                    <h2 class="text-dark mb-4">Vragen</h2>
 
-            <h2 class="text-dark mb-4">Vragen</h2>
+                    {% for assignment in lesson.assignments %}
 
-            {% for assignment in lesson.assignments %}
+                        <div class="card shadow-sm border mb-4">
 
-                <div class="card shadow-sm border mb-4">
+                            <div class="card-body p-4">
 
-                    <div class="card-body p-4">
+                                <h5 class="mb-3">
+                                    {{ loop.index }}. {{ assignment.question }}
+                                </h5>
 
-                        <h5 class="mb-3">
-                            {{ loop.index }}. {{ assignment.question }}
-                        </h5>
+                                {% if assignment.questionType == 'Meerkeuze vraag' %}
 
-                        {% if assignment.questionType == 'Meerkeuze vraag' %}
-
-                            {% for option in assignment.answerOptions %}
-                                <div class="form-check mb-2">
-                                        {% set choices = option.optionText|split(',') %}
-                                        {% for i in choices|slice(0) %}
-                                            <input class="form-check-input"
-                                                   type="checkbox"
-                                                   name="question_{{ assignment.id }}"
-                                                   value="{{ option.id }}">
-                                            <label class="form-check-label">
+                                    {% for option in assignment.answerOptions %}
+                                        <div class="form-check mb-2">
+                                            {% set choices = option.optionText|split(',') %}
+                                            {% for i in choices|slice(0) %}
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="question_{{ assignment.id }}"
+                                                       value="{{ option.id }}">
+                                                <label class="form-check-label">
                                                     {{ (i) }}
-                                            </label>
-                                            <br>
-                                        {% endfor %}
-                                </div>
-                            {% endfor %}
-                        {% elseif assignment.questionType == 'Juist onjuist vraag' %}
-
-                            {% for option in assignment.answerOptions %}
-                                <div class="form-check mb-2">
-                                    {% set choices = option.optionText|split(',') %}
-                                    {% for i in choices|slice(0) %}
-                                        <input class="form-check-input"
-                                               type="radio"
-                                               name="question_{{ assignment.id }}"
-                                               value="{{ option.id }}">
-                                        <label class="form-check-label">
-                                            {{ (i) }}
-                                        </label>
-                                        <br>
+                                                </label>
+                                                <br>
+                                            {% endfor %}
+                                        </div>
                                     {% endfor %}
-                                </div>
-                            {% endfor %}
-                        {% elseif assignment.questionType == 'Open vraag' %}
+                                {% elseif assignment.questionType == 'Juist onjuist vraag' %}
 
-                            <textarea class="form-control"
-                                      rows="4"
-                                      placeholder="Typ je antwoord..."></textarea>
+                                    {% for option in assignment.answerOptions %}
+                                        <div class="form-check mb-2">
+                                            {% set choices = option.optionText|split(',') %}
+                                            {% for i in choices|slice(0) %}
+                                                <input class="form-check-input"
+                                                       type="radio"
+                                                       name="question_{{ assignment.id }}"
+                                                       value="{{ option.id }}">
+                                                <label class="form-check-label">
+                                                    {{ (i) }}
+                                                </label>
+                                                <br>
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                {% elseif assignment.questionType == 'Open vraag' %}
 
-                        {% endif %}
-                    </div>
-                </div>
-            {% else %}
-                <p class="text-muted">
-                    Er zijn nog geen vragen toegevoegd aan deze les.
-                </p>
+                                    <textarea class="form-control"
+                                              rows="4"
+                                              placeholder="Typ je antwoord..."></textarea>
 
-            {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">
+                            Er zijn nog geen vragen toegevoegd aan deze les.
+                        </p>
 
-        </div>
-
+                    {% endfor %}
+                    <button type="submit" class="btn btn-info">Gegevens updaten</button>
+                </form>
+            </div>
     </div>
 
 </div>
