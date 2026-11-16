@@ -19,7 +19,8 @@ class LessonController extends AbstractController
         $lesson = $lessonRepository->find($id);
         $submission = new Submission();
         $form = $this->createForm(SubmissionType::class, $submission);
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()->$form->isSubmitted())   {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') )  {
             $submission = $form->getData();
             $entityManager->persist($submission);
             $entityManager->flush();
@@ -30,7 +31,16 @@ class LessonController extends AbstractController
 
         return $this->render('lesson/index.html.twig', [
             'lesson' => $lesson,
-            'form' => $form
+            'submissionform' => $form
+        ]);
+    }
+    #[Route('/lesson/submisson', name: 'app_lesson_submission')]
+    public function submission(): Response
+    {
+
+        return $this->render('lesson/submission.html.twig',[
+
         ]);
     }
 }
+

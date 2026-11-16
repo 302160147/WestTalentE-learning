@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\AnswerOption;
 use App\Entity\Assignment;
+use App\Entity\Lesson;
 use App\Entity\Submission;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,11 +18,11 @@ class SubmissionType extends AbstractType
     {
         $builder
             ->add('answerText')
-//            ->add('isCorrect')
-//            ->add('feedback')
-//            ->add('submittedAt', null, [
-//                'widget' => 'single_text'
-//            ])
+            ->add('isCorrect')
+            ->add('feedback')
+            ->add('submittedAt', null, [
+                'widget' => 'single_text'
+            ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
@@ -32,6 +33,10 @@ class SubmissionType extends AbstractType
             ])
             ->add('answerOption', EntityType::class, [
                 'class' => AnswerOption::class,
+                'choice_label' => 'id',
+            ])
+            ->add('lesson', EntityType::class, [
+                'class' => Lesson::class,
                 'choice_label' => 'id',
             ])
         ;
