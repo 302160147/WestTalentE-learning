@@ -36,13 +36,13 @@ class Module
     /**
      * @var Collection<int, StudentProgress>
      */
-    #[ORM\OneToMany(targetEntity: StudentProgress::class, mappedBy: 'module')]
-    private Collection $studentProgress;
+    #[ORM\OneToMany(targetEntity: Studentprogress::class, mappedBy: 'module')]
+    private Collection $studentprogress;
 
     public function __construct()
     {
         $this->Lessons = new ArrayCollection();
-        $this->studentProgress = new ArrayCollection();
+        $this->studentprogress = new ArrayCollection();
     }
 
     public function getId(): ?int
