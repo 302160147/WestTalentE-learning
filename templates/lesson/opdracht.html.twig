@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <a href="{{ path('app_lesson', {'id':page.lesson.id}) }}">terug naar les</a>
+   <div>hi</div>
+    {{ page.id }}
+    <br>
+    {{ page.title }}
+    <br>
+    {{ page.info }}
+    <br>
+    {{ page.content }}
+    <br>
+{#    <img src="asset/{{ page.img }}">#}
+{#    <img src="asset/HI.png">#}
+{#    <img src="{{ asset("/images/", page.img ) }}">#}
+    {{ page.img }}
+    <br>
+    {{ page.lesson.id }}
+    <div>
+
+        {% if page.id > 1 %}
+        <a href="{{ path('app_opdracht', {'id':page.id - 1}) }}">terug</a>
+        {% endif %}
+            <a href="{{ path('app_opdracht', {'id':page.id + 1}) }}">volgende</a>
+    </div>
+{% endblock %}

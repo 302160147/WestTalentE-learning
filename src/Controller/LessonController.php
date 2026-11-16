@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Page;
 use App\Entity\Submission;
 use App\Form\SubmissionType;
 use App\Repository\LessonRepository;
+use App\Repository\PageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,12 +36,12 @@ class LessonController extends AbstractController
             'submissionform' => $form
         ]);
     }
-    #[Route('/lesson/submisson', name: 'app_lesson_submission')]
-    public function submission(): Response
+    #[Route('/lesson/opdracht/{id}', name: 'app_opdracht')]
+    public function submission(EntityManagerInterface $entityManager, int $id): Response
     {
-
-        return $this->render('lesson/submission.html.twig',[
-
+        $page = $entityManager->getRepository(Page::class)->find($id);
+        return $this->render('lesson/opdracht.html.twig',[
+            'page' => $page,
         ]);
     }
 }
