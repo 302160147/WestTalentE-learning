@@ -38,6 +38,10 @@ class Submission
     #[ORM\ManyToOne(inversedBy: 'submissions')]
     private ?Lesson $lesson = null;
 
+    public function __construct()
+    {
+        $this->submittedAt = new \DateTimeImmutable();
+    }
     public function getId(): ?int
     {
         return $this->id;
