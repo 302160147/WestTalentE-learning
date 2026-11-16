@@ -34,9 +34,9 @@ class Module
     private Collection $Lessons;
 
     /**
-     * @var Collection<int, StudentProgress>
+     * @var Collection<int, Studentprogress>
      */
-    #[ORM\OneToMany(targetEntity: StudentProgress::class, mappedBy: 'module')]
+    #[ORM\OneToMany(targetEntity: Studentprogress::class, mappedBy: 'module')]
     private Collection $studentProgress;
 
     public function __construct()
@@ -129,14 +129,14 @@ class Module
     }
 
     /**
-     * @return Collection<int, StudentProgress>
+     * @return Collection<int, Studentprogress>
      */
     public function getStudentProgress(): Collection
     {
         return $this->studentProgress;
     }
 
-    public function addStudentProgress(StudentProgress $studentProgress): static
+    public function addStudentProgress(Studentprogress $studentProgress): static
     {
         if (!$this->studentProgress->contains($studentProgress)) {
             $this->studentProgress->add($studentProgress);
@@ -146,7 +146,7 @@ class Module
         return $this;
     }
 
-    public function removeStudentProgress(StudentProgress $studentProgress): static
+    public function removeStudentProgress(Studentprogress $studentProgress): static
     {
         if ($this->studentProgress->removeElement($studentProgress)) {
             // set the owning side to null (unless already changed)

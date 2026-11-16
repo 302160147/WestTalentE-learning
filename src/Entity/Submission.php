@@ -35,6 +35,9 @@ class Submission
     #[ORM\ManyToOne(inversedBy: 'submissions')]
     private ?AnswerOption $answerOption = null;
 
+    #[ORM\ManyToOne(inversedBy: 'submissions')]
+    private ?Lesson $lesson = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Submission
     public function setAnswerOption(?AnswerOption $answerOption): static
     {
         $this->answerOption = $answerOption;
+
+        return $this;
+    }
+
+    public function getLesson(): ?Lesson
+    {
+        return $this->lesson;
+    }
+
+    public function setLesson(?Lesson $lesson): static
+    {
+        $this->lesson = $lesson;
 
         return $this;
     }

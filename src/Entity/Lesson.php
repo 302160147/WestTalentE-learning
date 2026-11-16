@@ -34,9 +34,23 @@ class Lesson
     #[ORM\OneToMany(targetEntity: Assignment::class, mappedBy: 'lesson')]
     private Collection $assignments;
 
+    /**
+     * @var Collection<int, Submission>
+     */
+    #[ORM\OneToMany(targetEntity: Submission::class, mappedBy: 'lesson')]
+    private Collection $submissions;
+
+    /**
+     * @var Collection<int, Studentprogress>
+     */
+    #[ORM\OneToMany(targetEntity: Studentprogress::class, mappedBy: 'lesson')]
+    private Collection $studentProgress;
+
     public function __construct()
     {
         $this->assignments = new ArrayCollection();
+        $this->submissions = new ArrayCollection();
+        $this->studentProgress = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +130,66 @@ class Lesson
             // set the owning side to null (unless already changed)
             if ($assignment->getLesson() === $this) {
                 $assignment->setLesson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Submission>
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+
+    public function addSubmission(Submission $submission): static
+    {
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+            $submission->setLesson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubmission(Submission $submission): static
+    {
+        if ($this->submissions->removeElement($submission)) {
+            // set the owning side to null (unless already changed)
+            if ($submission->getLesson() === $this) {
+                $submission->setLesson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Studentprogress>
+     */
+    public function getStudentProgress(): Collection
+    {
+        return $this->studentProgress;
+    }
+
+    public function addStudentProgress(Studentprogress $studentProgress): static
+    {
+        if (!$this->studentProgress->contains($studentProgress)) {
+            $this->studentProgress->add($studentProgress);
+            $studentProgress->setLesson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudentProgress(Studentprogress $studentProgress): static
+    {
+        if ($this->studentProgress->removeElement($studentProgress)) {
+            // set the owning side to null (unless already changed)
+            if ($studentProgress->getLesson() === $this) {
+                $studentProgress->setLesson(null);
             }
         }
 

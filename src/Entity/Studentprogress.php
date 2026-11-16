@@ -28,6 +28,9 @@ class Studentprogress
     #[ORM\ManyToOne(inversedBy: 'studentProgresses')]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'studentProgress')]
+    private ?Lesson $lesson = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,18 @@ class Studentprogress
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getLesson(): ?Lesson
+    {
+        return $this->lesson;
+    }
+
+    public function setLesson(?Lesson $lesson): static
+    {
+        $this->lesson = $lesson;
 
         return $this;
     }
