@@ -22,10 +22,10 @@ class Studentprogress
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'studentprogress')]
+    #[ORM\ManyToOne(inversedBy: 'studentProgress')]
     private ?Module $module = null;
 
-    #[ORM\ManyToOne(inversedBy: 'studentprogresses')]
+    #[ORM\ManyToOne(inversedBy: 'studentProgresses')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'studentProgress')]

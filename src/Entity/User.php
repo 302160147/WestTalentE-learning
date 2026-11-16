@@ -55,12 +55,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Studentprogress>
      */
     #[ORM\OneToMany(targetEntity: Studentprogress::class, mappedBy: 'user')]
-    private Collection $studentprogresses;
+    private Collection $studentProgresses;
 
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
-        $this->studentprogresses = new ArrayCollection();
+        $this->studentProgresses = new ArrayCollection();
     }
 
     public function getId(): ?int
