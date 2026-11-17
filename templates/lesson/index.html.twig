@@ -23,6 +23,9 @@
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
+                <div>
+
+                </div>
                 {% for page in lesson.pages %}
 {#                    <a href="{{ path('app_opdracht', {'id':page.id}) }}">Pagina: {{ page.id }}</a>#}
                     <div>
@@ -37,14 +40,23 @@
             </div>
         </div>
             <div class="col-lg-5">
-                <div>
-
-                </div>
+{#                <div>#}
+{#                    {{ form_start(submissionform) }}#}
+{#                    {{ form_row(submissionform.user) }}#}
+{#                    <button type="submit" class="btn btn-info">test</button>#}
+{#                    {{ form_end(submissionform) }}#}
+{#                </div>#}
                 <form method="post" action="">
                     <h2 class="text-dark mb-4">Vragen</h2>
 
                     {% for assignment in lesson.assignments %}
-
+                        {% if assignment.lesson.id == lesson.id %}
+                            <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
+                            <button class="btn btn-info">Maak vraag</button>
+                            </a>
+                        {% endif %}
+{#                        {{ lesson.id }}#}
+{#                        {{ assignment.lesson.id }}#}
                         <div class="card shadow-sm border mb-4">
 
                             <div class="card-body p-4">
@@ -108,5 +120,5 @@
     </div>
 
 </div>
-<script src="/assets/pagina.js"></script>
+{#<script src="/assets/pagina.js"></script>#}
 {% endblock %}

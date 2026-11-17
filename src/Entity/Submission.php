@@ -42,6 +42,8 @@ class Submission
     {
         $this->submittedAt = new \DateTimeImmutable();
     }
+
+
     public function getId(): ?int
     {
         return $this->id;
