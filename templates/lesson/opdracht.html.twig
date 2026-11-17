@@ -5,64 +5,25 @@
     <div class="bg-info bg-gradient bg-opacity-50" style="height: 778px">
         <a class="btn btn-info" href="{{ path('app_lesson', {'id':assignment.lesson.id}) }}">terug naar les</a>
         {{ assignment.lesson.id }}
-        {% if assignment.lesson.id == lesson.id %}
-        {{ lesson.id }}
-        {% endif %}
+
         <div>
-            {{ form(form) }}
+            <div>
+                {{ form_start(form) }}
+                {{ form_row(form.answerText) }}
+                {{ form_row(form.submittedAt) }}
+                {{ form_row(form.user) }}
+                {{ form_row(form.assignment) }}
+                {% for option in assignment.answerOptions %}
+                    {% if option.id !== null %}
+                        {{ option.id }}
+                        {{ form_row(form.answerOption) }}
+                    {% endif %}
+                {% endfor %}
+                {{ form_row(form.lesson) }}
+                <button type="submit" class="btn btn-info">test</button>
+                {{ form_end(form,) }}
+            </div>
         </div>
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="border">#}
-{#                        <div>{{ assignment.question }}</div>#}
-{#                        {% if assignment.questionType == 'Meerkeuze vraag' %}#}
-{#                        {% for options in assignment.answerOptions %}#}
-{#                            <div class="form-check mb-2">#}
-{#                                {% set choices = options.optionText|split(',') %}#}
-{#                                {% for i in choices|slice(0) %}#}
-{#                                    <input class="form-check-input"#}
-{#                                           type="checkbox"#}
-{#                                           name="question_{{ assignment.id }}"#}
-{#                                           value="{{ options.id }}"#}
-{#                                           placeholder="answers">#}
-{#                                    <label class="form-check-label">#}
-{#                                        {{ (i) }}#}
-{#                                    </label>#}
-{#                                    <br>#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                            <div class="mb-3 visually-hidden">#}
-{#                                <label for="user_id" class="form-label">User</label>#}
-{#                                <input type="text" name="user" class="form-control" id="user_id" value="{{ app.user.id }}" disabled>#}
-{#                            </div>#}
-{#                            <div class="mb-3 visually-hidden">#}
-{#                                <label for="assignment_id" class="form-label">Opdracht</label>#}
-{#                                <input type="text" name="opdracht" class="form-control" id="assignment_id" value="{{ assignment.id }}" disabled>#}
-{#                            </div>#}
-{#                            <div class="mb-3 visually-hidden">#}
-{#                                <label for="antwoord_Optie_id" class="form-label">antwoord optie</label>#}
-{#                                <input type="text" name="opties" class="form-control" id="antwoord_Optie_id" value="{{ options.id }}" disabled>#}
-{#                            </div>#}
-{#                            <div class="mb-3 visually-hidden">#}
-{#                                <label for="Les_id" class="form-label">les</label>#}
-{#                                <input type="text" name="les" class="form-control" id="Les_id" value="{{ assignment.lesson.id }}" disabled>#}
-{#                            </div>#}
-{#                            <button type="submit" class="btn btn-info">Verstuur antwoord</button>#}
-{#                        {% endfor %}#}
-{#                        {% elseif assignment.questionType == 'Juist onjuist vraag' %}#}
-{#                            <div>hi</div>#}
-{#                        {% elseif assignment.questionType == 'Open vraag' %}#}
-{#                            {{ form_errors(form) }}#}
-{#                                {{ form_start(form) }}#}
-{#                                 <input  type="text">{{ form_row(form.answerText,#}
-{#                                    value: 3#}
-{#                                    ) }}#}
-{#                                <button type="submit" class="btn btn-info">Verstuur antwoord</button>#}
-{#                                {{ form_end(form) }}#}
-{#                        {% endif %}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
     </div>
 {% endblock %}
 
