@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Assignment;
+use App\Entity\Lesson;
 use App\Entity\Page;
 use App\Entity\Submission;
 use App\Entity\AnswerOption;
@@ -50,9 +51,11 @@ class LessonController extends AbstractController
             $entityManager->flush();
         }
         $assignments = $entityManager->getRepository(Assignment::class)->find($id);
+//        $lesson = $entityManager->getRepository(Lesson::class)->findBy($id);
         return $this->render('lesson/opdracht.html.twig',[
             'form' => $form,
-            'assignment' => $assignments
+            'assignment' => $assignments,
+//            'lesson' => $lesson
         ]);
     }
 //    #[Route('/lesson/opdracht/submission', name: 'app_submission')]

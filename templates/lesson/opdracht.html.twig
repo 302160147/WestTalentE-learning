@@ -4,6 +4,10 @@
 {% block body %}
     <div class="bg-info bg-gradient bg-opacity-50" style="height: 778px">
         <a class="btn btn-info" href="{{ path('app_lesson', {'id':assignment.lesson.id}) }}">terug naar les</a>
+        {{ assignment.lesson.id }}
+        {% if assignment.lesson.id == lesson.id %}
+        {{ lesson.id }}
+        {% endif %}
         <div>
             {{ form(form) }}
         </div>
