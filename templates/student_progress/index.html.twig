@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container py-5">
+    <h1 class="text-dark mb-4">Studentvoortgang</h1>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="text-dark fs-4 mb-4">Voortgang van studenten</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Module</th>
+                            <th>Les</th>
+                            <th>Voltooide lessen</th>
+                            <th>Totaal lessen</th>
+                            <th>Status</th>
+                            <th>Voortgang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for progress in studentProgresses %}
+
+                            <tr>
+                                <td>{{ progress.user.email }}</td>
+                                <td>{{ progress.module.name }}</td>
+                                <td>{{ progress.lesson.name }}</td>
+                                <td>{{ progress.completedLesson }}</td>
+                                <td>{{ progress.totalLessons }}</td>
+
+                                <td>
+                                    {% if progress.status == 'Voltooid' %}
+                                        <span class="badge bg-success">Voltooid</span>
+                                    {% elseif progress.status == 'Bezig' %}
+                                        <span class="badge bg-warning text-dark">Bezig</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ progress.status }}</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% set percentage = progress.totalLessons > 0 ? (progress.completedLesson / progress.totalLessons * 100)|round : 0 %}
+
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-primary"
+                                             style="width: {{ percentage }}%">
+                                            {{ percentage }}%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    Er is nog geen voortgang geregistreerd.
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
