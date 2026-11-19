@@ -55,13 +55,19 @@ class LessonController extends AbstractController
         $form->get('answerOption')->setData($answerOptions);
         $form->get('lesson')->setData($lesson);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') )  {
-            $submission = $form->getData();
-            $entityManager->persist($submission);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') ) {
+                $submission = $form->getData();
+                if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
+                    $entityManager->persist($submission);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Opdracht verstuurd.');
 
-//            return $this->redirectToRoute('app_lesson');
-        }
+                    return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
+                } else {
+                    $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
+                    return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
+                }
+            }
         return $this->render('lesson/opdracht.html.twig',[
             'form' => $form,
             'assignment' => $assignments,

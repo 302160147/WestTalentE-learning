@@ -18,8 +18,8 @@ class SubmissionType extends AbstractType
     {
         $builder
             ->add('answerText')
-            ->add('isCorrect')
-            ->add('feedback')
+//            ->add('isCorrect')
+//            ->add('feedback')
             ->add('submittedAt', null, [
                 'widget' => 'single_text'
             ])

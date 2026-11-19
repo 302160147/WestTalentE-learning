@@ -2,26 +2,41 @@
 
 
 {% block body %}
+{#    {% for label, messages in app.flashes %}#}
+{#        {% for message in messages %}#}
+{#            <div class="alert alert-{{ label }}">#}
+{#                {{ message }}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
     <div class="bg-info bg-gradient bg-opacity-50" style="height: 778px">
         <a class="btn btn-info" href="{{ path('app_lesson', {'id':assignment.lesson.id}) }}">terug naar les</a>
-        {{ assignment.lesson.id }}
 
-        <div>
-            <div>
-                {{ form_start(form) }}
-                {{ form_row(form.answerText) }}
-                {{ form_row(form.submittedAt) }}
-                {{ form_row(form.user) }}
-                {{ form_row(form.assignment) }}
-                {% for option in assignment.answerOptions %}
-                    {% if option.id !== null %}
-                        {{ option.id }}
-                        {{ form_row(form.answerOption) }}
-                    {% endif %}
-                {% endfor %}
-                {{ form_row(form.lesson) }}
-                <button type="submit" class="btn btn-info">test</button>
-                {{ form_end(form,) }}
+        <div class="container">
+            <div class="row">
+                <h1 class="rounded bg-light p-3">
+                    {{ assignment.question }}
+                </h1>
+                <div >
+                    {{ form_start(form) }}
+                    {{ form_row(form.answerText,{
+                        label: 'Antwoord'
+                    }) }}
+                    <div class="visually-hidden" >
+                        {{ form_row(form.submittedAt) }}
+                        {{ form_row(form.user,) }}
+                        {{ form_row(form.assignment) }}
+                        {% for option in assignment.answerOptions %}
+                            {% if option.id !== null %}
+                                {{ form_row(form.answerOption) }}
+                            {% endif %}
+                        {% endfor %}
+                        {{ form_row(form.lesson) }}
+                    </div>
+                    {{ form_widget(form._token) }}
+                    <button type="submit" class="btn btn-info">Verstuur</button>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
             </div>
         </div>
     </div>
