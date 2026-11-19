@@ -7,6 +7,7 @@ use App\Entity\Assignment;
 use App\Entity\Lesson;
 use App\Entity\Submission;
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,15 @@ class SubmissionType extends AbstractType
     {
         $builder
             ->add('answerText')
+            ->add('answerOption', EntityType::class, [
+                'class' => AnswerOption::class,
+                'choice_label' => function (?AnswerOption $answerOption): string {
+                    return $answerOption ? strtoupper((string) $answerOption->getOptionText()) : '';
+                },
+                'choice_attr' => function (?AnswerOption $answerOption) {
+                    return $answerOption ? ['data-answer-text' => (string) $answerOption->getOptionText()] : [];
+                },
+            ])
             ->add('submittedAt', null, [
                 'widget' => 'single_text'
             ])
@@ -27,10 +37,6 @@ class SubmissionType extends AbstractType
             ])
             ->add('assignment', EntityType::class, [
                 'class' => Assignment::class,
-                'choice_label' => 'id',
-            ])
-            ->add('answerOption', EntityType::class, [
-                'class' => AnswerOption::class,
                 'choice_label' => 'id',
             ])
             ->add('lesson', EntityType::class, [
