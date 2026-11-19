@@ -69,7 +69,14 @@
                             <div class="card-body p-4">
 
                                 <h5 class="mb-3">
-                                    {{ loop.index }}. {{ assignment.question }}
+                                    {{ loop.index }}.
+                                    {% set description = assignment.question|split(',') %}
+                                    {% for i in description|slice(0) %}
+                                        <label class="form-check-label">
+                                            {{ (i) }}
+                                        </label>
+                                        <br>
+                                    {% endfor %}
                                 </h5>
 
                                 {% if assignment.questionType == 'Meerkeuze vraag' %}
