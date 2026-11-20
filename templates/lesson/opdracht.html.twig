@@ -1,29 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const optionSelect = document.getElementById('{{ form.answerOption.vars.id }}');
-            const answerTextInput = document.getElementById('{{ form.answerText.vars.id }}');
-
-            if (optionSelect && answerTextInput) {
-                optionSelect.addEventListener('change', () => {
-                    const selectedOption = optionSelect.options[optionSelect.selectedIndex];
-                    answerTextInput.value = selectedOption.getAttribute('data-answer-text') || '';
-                });
-            }
-        });
-    </script>
-{% endblock %}
-
 {% block body %}
-{#    {% for label, messages in app.flashes %}#}
-{#        {% for message in messages %}#}
-{#            <div class="alert alert-{{ label }}">#}
-{#                {{ message }}#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    {% endfor %}#}
     <div class="bg-info bg-gradient bg-opacity-50" style="height: 778px">
         <a class="btn btn-info" href="{{ path('app_lesson', {'id':assignment.lesson.id}) }}">terug naar les</a>
 
@@ -40,44 +17,51 @@
                        {% endfor %}
                    </div>
                 </h1>
-                <div >
-                    {{ form_start(form) }}
-                    {{ form_row(form.answerText,{
-                        label: 'Antwoord'
-                    }) }}
-                    {{ form_row(form.answerOption) }}
-                    <div class="visually-hidden" >
-                        {{ form_row(form.submittedAt) }}
-                        {{ form_row(form.user,) }}
-                        {{ form_row(form.assignment) }}
-{#                        {% for option in assignment.answerOptions %}#}
-{#                            {% if option.id !== null %}#}
-{#                                {{ form_row(form.answerOption) }}#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-                        {{ form_row(form.lesson) }}
+                {% if assignment.questionType == 'Meerkeuze vraag'  %}
+                    <div>
+                        {{ form_start(form) }}
+                        {{ form_row(form.answerOption) }}
+                        <div class="visually-hidden" >
+                            {{ form_row(form.submittedAt) }}
+                            {{ form_row(form.user) }}
+                            {{ form_row(form.assignment) }}
+                            {{ form_row(form.lesson) }}
+                        </div>
+                        {{ form_widget(form._token) }}
+                        <button type="submit" class="btn btn-info">Verstuur</button>
+                        {{ form_end(form, {'render_rest': false}) }}
                     </div>
-                    {% for option in assignment.answerOptions %}
-                        {% if option.id !== null %}
-{#                            {{ form_row(form.answerOption) }}#}
-                            {% set choices = option.optionText|split(',') %}
-                            {% for i in choices|slice(0) %}
-                                <input class="form-check-input"
-                                       id="options"
-                                       type="checkbox"
-                                       name="question_{{ assignment.id }}"
-                                       value="{{ option.id }}">
-                                <label class="form-check-label">
-                                    {{ (i) }}
-                                </label>
-                                <br>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                    {{ form_widget(form._token) }}
-                    <button type="submit" class="btn btn-info">Verstuur</button>
-                    {{ form_end(form, {'render_rest': false}) }}
-                </div>
+                {% elseif assignment.questionType == 'Juist onjuist vraag'  %}
+                    <div>
+                        {{ form_start(formJ) }}
+                        {{ form_row(formJ.answerOption) }}
+                        <div class="visually-hidden" >
+                            {{ form_row(formJ.submittedAt) }}
+                            {{ form_row(formJ.user) }}
+                            {{ form_row(formJ.assignment) }}
+                            {{ form_row(formJ.lesson) }}
+                        </div>
+                        {{ form_widget(formJ._token) }}
+                        <button type="submit" class="btn btn-info">Verstuur</button>
+                        {{ form_end(formJ, {'render_rest': false}) }}
+                    </div>
+                {% elseif assignment.questionType == 'Open vraag' %}
+                    <div>
+                        {{ form_start(formO) }}
+                        {{ form_row(formO.answerText,{
+                            label: 'Antwoord'
+                        }) }}
+                        <div class="visually-hidden" >
+                            {{ form_row(formO.submittedAt) }}
+                            {{ form_row(formO.user) }}
+                            {{ form_row(formO.assignment) }}
+                            {{ form_row(formO.lesson) }}
+                        </div>
+                        {{ form_widget(formO._token) }}
+                        <button type="submit" class="btn btn-info">Verstuur</button>
+                        {{ form_end(formO, {'render_rest': false}) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

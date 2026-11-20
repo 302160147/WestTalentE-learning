@@ -9,6 +9,8 @@ use App\Entity\Page;
 use App\Entity\Submission;
 use App\Entity\AnswerOption;
 use App\Form\SubmissionType;
+use App\Form\SubmissionJType;
+use App\Form\SubmissionOType;
 use App\Repository\LessonRepository;
 use App\Repository\PageRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,16 +46,21 @@ class LessonController extends AbstractController
     public function opdracht(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
         $submission = new Submission();
-        $lesson = $entityManager->getRepository(Lesson::class)->find($id);
+//        $lesson = $entityManager->getRepository(Lesson::class)->find($id);
         $assignments = $entityManager->getRepository(Assignment::class)->find($id);
+        $lesson = $assignments->getLesson();
+        $submission->setAssignment($assignments);
         $answerOptions = $entityManager->getRepository(AnswerOption::class)->find($id);
         $user = $this->getUser(); $submittedAt = new \DateTimeImmutable();
         $form = $this->createForm(SubmissionType::class, $submission);
-        $form->get('submittedAt')->setData($submittedAt);
-        $form->get('user')->setData($user);
-        $form->get('assignment')->setData($assignments);
-        $form->get('answerOption')->setData($answerOptions);
-        $form->get('lesson')->setData($lesson);
+        $formJ = $this->createForm(SubmissionJType::class, $submission);
+        $formO = $this->createForm(SubmissionOType::class, $submission);
+        $form->get('submittedAt')->setData($submittedAt); $form->get('user')->setData($user); $form->get('assignment')->setData($assignments); $form->get('lesson')->setData($lesson);
+        $formJ->get('submittedAt')->setData($submittedAt); $formJ->get('user')->setData($user); $formJ->get('assignment')->setData($assignments); $formJ->get('lesson')->setData($lesson);
+        $formO->get('submittedAt')->setData($submittedAt); $formO->get('user')->setData($user); $formO->get('assignment')->setData($assignments); $formO->get('lesson')->setData($lesson);
+
+//        $form->get('answerOption')->setData($answerOptions);
+
         $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') ) {
                 $submission = $form->getData();
@@ -62,14 +69,44 @@ class LessonController extends AbstractController
                     $entityManager->flush();
                     $this->addFlash('success', 'Opdracht verstuurd.');
 
-                    return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
+                    return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
                 } else {
                     $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
-                    return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
+                    return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
                 }
             }
+        $formJ->handleRequest($request);
+        if ($formJ->isSubmitted() && $formJ->isValid() && $request->isMethod('POST') ) {
+            $submission = $form->getData();
+            if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
+                $entityManager->persist($submission);
+                $entityManager->flush();
+                $this->addFlash('success', 'Opdracht verstuurd.');
+
+                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+            } else {
+                $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
+                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+            }
+        }
+        $formO->handleRequest($request);
+        if ($formO->isSubmitted() && $formO->isValid() && $request->isMethod('POST') ) {
+            $submission = $form->getData();
+            if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
+                $entityManager->persist($submission);
+                $entityManager->flush();
+                $this->addFlash('success', 'Opdracht verstuurd.');
+
+                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+            } else {
+                $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
+                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+            }
+        }
         return $this->render('lesson/opdracht.html.twig',[
             'form' => $form,
+            'formJ' => $formJ,
+            'formO' => $formO,
             'assignment' => $assignments,
             'lesson' => $lesson
         ]);

@@ -27,8 +27,12 @@ class AnswerOption
     /**
      * @var Collection<int, Submission>
      */
-    #[ORM\OneToMany(targetEntity: Submission::class, mappedBy: 'answerOption')]
+    #[ORM\ManyToMany(targetEntity: Submission::class, mappedBy: 'answerOption')]
     private Collection $submissions;
+
+    /**
+     * @var Collection<int, Submission>
+     */
 
     public function __construct()
     {
@@ -79,6 +83,10 @@ class AnswerOption
     /**
      * @return Collection<int, Submission>
      */
+
+    /**
+     * @return Collection<int, Submission>
+     */
     public function getSubmissions(): Collection
     {
         return $this->submissions;
@@ -88,7 +96,7 @@ class AnswerOption
     {
         if (!$this->submissions->contains($submission)) {
             $this->submissions->add($submission);
-            $submission->setAnswerOption($this);
+            $submission->addAnswerOption($this);
         }
 
         return $this;
@@ -97,10 +105,7 @@ class AnswerOption
     public function removeSubmission(Submission $submission): static
     {
         if ($this->submissions->removeElement($submission)) {
-            // set the owning side to null (unless already changed)
-            if ($submission->getAnswerOption() === $this) {
-                $submission->setAnswerOption(null);
-            }
+            $submission->removeAnswerOption($this);
         }
 
         return $this;

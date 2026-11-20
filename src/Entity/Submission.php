@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubmissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,14 +35,18 @@ class Submission
     private ?Assignment $assignment = null;
 
     #[ORM\ManyToOne(inversedBy: 'submissions')]
-    private ?AnswerOption $answerOption = null;
-
-    #[ORM\ManyToOne(inversedBy: 'submissions')]
     private ?Lesson $lesson = null;
+
+    /**
+     * @var Collection<int, AnswerOption>
+     */
+    #[ORM\ManyToMany(targetEntity: AnswerOption::class, inversedBy: 'submissions')]
+    private Collection $answerOption;
 
     public function __construct()
     {
         $this->submittedAt = new \DateTimeImmutable();
+        $this->answerOption = new ArrayCollection();
     }
 
 
@@ -121,7 +127,7 @@ class Submission
         return $this;
     }
 
-    public function getAnswerOption(): ?AnswerOption
+    public function getAnswerOption(): ArrayCollection|Collection
     {
         return $this->answerOption;
     }
@@ -141,6 +147,22 @@ class Submission
     public function setLesson(?Lesson $lesson): static
     {
         $this->lesson = $lesson;
+
+        return $this;
+    }
+
+    public function addAnswerOption(AnswerOption $answerOption): static
+    {
+        if (!$this->answerOption->contains($answerOption)) {
+            $this->answerOption->add($answerOption);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswerOption(AnswerOption $answerOption): static
+    {
+        $this->answerOption->removeElement($answerOption);
 
         return $this;
     }
