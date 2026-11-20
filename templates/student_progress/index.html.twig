@@ -25,9 +25,9 @@
                         {% for progress in studentProgresses %}
 
                             <tr>
-                                <td>{{ progress.user.email }}</td>
+                                <td>{{ progress.user.firstName }} {{ progress.user.lastName }}</td>
                                 <td>{{ progress.module.name }}</td>
-                                <td>{{ progress.lesson.name }}</td>
+                                {# <td>{{ progress.lesson.name }}</td> #}
                                 <td>{{ progress.completedLesson }}</td>
                                 <td>{{ progress.totalLessons }}</td>
 
