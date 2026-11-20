@@ -110,4 +110,5 @@ class AnswerOption
 
         return $this;
     }
+    public array $bulkOptionTexts = [];
 }

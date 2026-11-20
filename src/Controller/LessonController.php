@@ -46,11 +46,9 @@ class LessonController extends AbstractController
     public function opdracht(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
         $submission = new Submission();
-//        $lesson = $entityManager->getRepository(Lesson::class)->find($id);
         $assignments = $entityManager->getRepository(Assignment::class)->find($id);
         $lesson = $assignments->getLesson();
         $submission->setAssignment($assignments);
-        $answerOptions = $entityManager->getRepository(AnswerOption::class)->find($id);
         $user = $this->getUser(); $submittedAt = new \DateTimeImmutable();
         $form = $this->createForm(SubmissionType::class, $submission);
         $formJ = $this->createForm(SubmissionJType::class, $submission);
@@ -59,7 +57,6 @@ class LessonController extends AbstractController
         $formJ->get('submittedAt')->setData($submittedAt); $formJ->get('user')->setData($user); $formJ->get('assignment')->setData($assignments); $formJ->get('lesson')->setData($lesson);
         $formO->get('submittedAt')->setData($submittedAt); $formO->get('user')->setData($user); $formO->get('assignment')->setData($assignments); $formO->get('lesson')->setData($lesson);
 
-//        $form->get('answerOption')->setData($answerOptions);
 
         $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') ) {
@@ -111,18 +108,5 @@ class LessonController extends AbstractController
             'lesson' => $lesson
         ]);
     }
-//    #[Route('/lesson/opdracht/submission', name: 'app_submission')]
-//    public function submission(EntityManagerInterface $entityManager, Request $request): Response
-//    {
-////        if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') )  {
-////            $submission = $form->getData();
-////            $entityManager->persist($submission);
-////            $entityManager->flush();
-////        }
-//
-//        return $this->render('lesson/submission.php',[
-//
-//        ]);
-//    }
 }
 

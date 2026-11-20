@@ -3,16 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\AnswerOption;
-use App\Entity\Module;
 use App\Entity\Assignment;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 
 class AnswerOptionCrudController extends AbstractCrudController
 {
@@ -23,42 +22,53 @@ class AnswerOptionCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName, ): iterable{
 
-
-
         yield IdField::new('id')
             ->onlyOnIndex();
 
-        yield TextField::new('optionText')
-            ->setLabel('Antwoord');
 
-//        yield ChoiceField::new('optionText')->renderExpanded()
-////            ->allowMultipleChoices()
-//            ->setLabel('Meerkeuze vraag')
-//            ->renderAsBadges([
-//                'Meerkeuze vraag' => 'info',
-//                'Open vraag' => 'primary',
-//                'Juist onjuist vraag' => 'success',
-//            ])
-//            ->setChoices([
-//                'Meerkeuze vraag' => 'Meerkeuze vraag',
-//                'Open vraag' => 'Open vraag',
-//                'Juist onjuist vraag' => 'Juist onjuist vraag',
-//            ])
-//            ->hideOnIndex();
-
-        yield TextareaField::new('optionText')
-            ->setLabel('Open vraag')
-            ->hideOnIndex();
-//
-//        yield ChoiceField::new('optionText')->renderExpanded()
-//            ->setLabel('Juist onjuist vraag')
-//            ->hideOnIndex();
+            if ($pageName === Crud::PAGE_NEW) {
+                yield ArrayField::new('bulkOptionTexts', 'optionText')
+                ->hideOnIndex();
+            } else {
+                yield TextField::new('optionText')
+                    ->setLabel('Meerkeuze of juist/onjuist vraag opties');
+            }
 
         yield IntegerField::new('isCorrect')
             ->setLabel('Is de vraag goed of niet?');
 
-        yield AssociationField::new('assignment')->autocomplete(
-            callback: static fn (assignment $assignment): string => sprintf('%s', $assignment->getId()),
-        );
+        yield AssociationField::new('assignment')
+            ->autocomplete(callback: static fn (assignment $assignment): string => sprintf('%s', $assignment->getId()),)
+            ->setRequired(true);
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entity): void
+    {
+
+        if (!$entity instanceof AnswerOption) {
+            return;
+        }
+
+        $assignment = $entity->getAssignment();
+
+        if ($assignment && method_exists($assignment, 'removeAnswerOption')) {
+            $assignment->removeAnswerOption($entity);
+        }
+
+        $entityManager->detach($entity);
+
+        foreach ($entity->bulkOptionTexts as $text) {
+            if (trim((string) $text) === '') {
+                continue;
+            }
+
+            $option = new AnswerOption();
+            $option->setAssignment($entity->getAssignment());
+            $option->setOptionText((string) $text);
+
+            $entityManager->persist($option);
+        }
+        $entityManager->flush();
     }
 }
+
