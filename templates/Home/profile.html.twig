@@ -3,85 +3,90 @@
 {% block title %}West Talent E-Learning{% endblock %}
 
 {% block body %}
-    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
-        <div class="container w-100">
-            <div class="row">
-                <h1>Welkom {{ app.user.firstName }} {{ app.user.lastName }}</h1>
-                    <div class="col-6">
-                        <h2>Informatie</h2>
-                        <ul class="list-group">
-                            <li class="list-group-item">Gebruikers naam: {{ app.user.firstName }} {{ app.user.lastName }}</li>
-                            <li class="list-group-item">E-mail: {{ app.user.email }}</li>
-                            <button class="border rounded bg-info">
-                                <a href="{{ path('app_profile_edit',{'id':app.user.id}) }}" class="nav-link">Update</a>
-                            </button>
-                        </ul>
-                    </div>
-                    <div class="col-6">
-                        <h2>Vakken</h2>
-                        <h4>Burgerschap</h4>
-                        <div class="btn-group">
-                            <div class="dropdown m-3">
-                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Niveau 2
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
-                                </ul>
+    <main class="profile-page">
+        <div class="container py-5">
+            <div class="profile-heading mb-4">
+                <div>
+                    <span class="profile-eyebrow">Mijn account</span>
+                    <h1 class="profile-title">Welkom terug, {{ app.user.firstName }}</h1>
+                </div>
+                <a href="{{ path('app_profile_update', {'id': app.user.id}) }}" class="btn profile-primary-btn">
+                    Gegevens bewerken
+                </a>
+            </div>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success profile-alert">{{ message }}</div>
+            {% endfor %}
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <section class="profile-card profile-summary h-100">
+                        <div class="profile-avatar" aria-hidden="true">
+                            {{ app.user.firstName|slice(0, 1)|upper }}{{ app.user.lastName|slice(0, 1)|upper }}
+                        </div>
+                        <h2>{{ app.user.firstName }} {{ app.user.lastName }}</h2>
+                        <p class="profile-email">{{ app.user.email }}</p>
+                        {% if app.user.isVerified %}
+                            <span class="profile-status"><span aria-hidden="true">✓</span> Account geverifieerd</span>
+                        {% endif %}
+
+                        <div class="profile-card-header profile-data-header">
+                            <div>
+                                <span class="profile-eyebrow">Persoonlijk</span>
+                                <h2>Mijn gegevens</h2>
                             </div>
-                            <div class="dropdown m-3">
-                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Niveau 3
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
-                                </ul>
+                            <a href="{{ path('app_profile_update', {'id': app.user.id}) }}" class="profile-edit-link">Bewerken</a>
+                        </div>
+                        <dl class="profile-details">
+                            <div>
+                                <dt>Voornaam</dt>
+                                <dd>{{ app.user.firstName }}</dd>
                             </div>
-                            <div class="dropdown m-3">
-                                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Niveau 4
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Module 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Module 4</a></li>
-                                </ul>
+                            <div>
+                                <dt>Achternaam</dt>
+                                <dd>{{ app.user.lastName }}</dd>
+                            </div>
+                            <div>
+                                <dt>E-mailadres</dt>
+                                <dd>{{ app.user.email }}</dd>
+                            </div>
+                        </dl>
+                    </section>
+                </div>
+
+                <div class="col-lg-8">
+                    <section class="profile-card profile-courses h-100">
+                        <div class="profile-card-header">
+                            <div>
+                                <span class="profile-eyebrow">Studieaanbod</span>
+                                <h2>Mijn vakken</h2>
                             </div>
                         </div>
-{#                        sectie voor Nederlands en Engels#}
-{#                        <h4>Nederlands</h4>#}
-{#                        <div class="dropdown">#}
-{#                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                                Dropdown link#}
-{#                            </a>#}
-
-{#                            <ul class="dropdown-menu">#}
-{#                                <li><a class="dropdown-item" href="#">Action</a></li>#}
-{#                                <li><a class="dropdown-item" href="#">Another action</a></li>#}
-{#                                <li><a class="dropdown-item" href="#">Something else here</a></li>#}
-{#                            </ul>#}
-{#                        </div>#}
-{#                        <h4>Engels</h4>#}
-{#                        <div class="dropdown">#}
-{#                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                                Dropdown link#}
-{#                            </a>#}
-
-{#                            <ul class="dropdown-menu">#}
-{#                                <li><a class="dropdown-item" href="#">Action</a></li>#}
-{#                                <li><a class="dropdown-item" href="#">Another action</a></li>#}
-{#                                <li><a class="dropdown-item" href="#">Something else here</a></li>#}
-{#                            </ul>#}
-{#                        </div>#}
-                    </div>
+                        <div class="profile-course">
+                            <div class="profile-course-icon" aria-hidden="true">B</div>
+                            <div class="profile-course-info">
+                                <h3>Burgerschap</h3>
+                                <p>Kies een niveau om de modules te bekijken.</p>
+                            </div>
+                            <div class="profile-levels">
+                                {% for level in 2..4 %}
+                                    <div class="dropdown">
+                                        <button class="btn profile-level-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Niveau {{ level }}
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            {% for module in 1..4 %}
+                                                <li><a class="dropdown-item" href="#">Module {{ module }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 {% endblock %}

@@ -25,96 +25,64 @@
         {% endif %}
     </head>
 
-    <body>
+    <body class="d-flex flex-column min-vh-100">
 
-        <nav class="navbar navbar-expand-lg bg-primary py-1">
-            <div class="container-fluid">
-
-                <a class="navbar-brand" href="{{ path('app_home') }}">
-                    <img src="{{ asset('/images/logo.svg') }}" class="img-fluid" alt="West Talent" width="150">
+        <nav class="navbar navbar-expand-lg site-navbar">
+            <div class="container-fluid px-3 px-lg-4">
+                <a class="navbar-brand site-brand me-3" href="{{ path('app_home') }}">
+                    <img src="{{ asset('/images/logo.svg') }}" alt="West Talent" height="38">
+                </a>
+                <a class="navbar-brand site-brand me-auto" href="{{ path('app_home') }}">
+                    <img src="{{ asset('/images/logo.png') }}" alt="ROC Mondriaan" height="76">
                 </a>
 
-                <a class="navbar-brand" href="{{ path('app_home') }}">
-                    <img src="{{ asset('/images/logo.png') }}" class="img-fluid" alt="ROC Mondriaan" width="150">
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler site-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Navigatie openen">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav d-flex justify-content-between">
-
-                    <ul class="navbar-nav col-8">
-
+                <div class="collapse navbar-collapse" id="mainNavigation">
+                    <ul class="navbar-nav site-nav mx-lg-auto">
                         <li class="nav-item">
-                            <a href="{{ path('app_home') }}" class="nav-link">
-                                <button class="border rounded px-5 py-2">Home</button>
-                            </a>
+                            <a href="{{ path('app_home') }}" class="nav-link site-nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %}">Home</a>
                         </li>
 
                         {% if app.user %}
                             <li class="nav-item">
-                                <a href="{{ path('app_niveaus') }}" class="nav-link">
-                                    <button class="border rounded px-5 py-2">Niveaus</button>
-                                </a>
+                                <a href="{{ path('app_niveaus') }}" class="nav-link site-nav-link{% if app.request.attributes.get('_route') == 'app_niveaus' %} active{% endif %}">Niveaus</a>
                             </li>
-
                             <li class="nav-item">
-                                <a href="{{ path('app_profile') }}" class="nav-link">
-                                    <button class="border rounded px-5 py-2">Profiel</button>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('app_student_progress') }}" class="nav-link">
-                                    <button class="border rounded px-5 py-2">Voortgang</button>
-                                </a>
+                                <a href="{{ path('app_profile') }}" class="nav-link site-nav-link{% if app.request.attributes.get('_route') starts with 'app_profile' %} active{% endif %}">Profiel</a>
                             </li>
                         {% endif %}
 
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('admin') }}">
-                                    <button class="border rounded px-5 py-2">Admin</button>
-                                </a>
+                                <a class="nav-link site-nav-link" href="{{ path('admin') }}">Admin</a>
                             </li>
                         {% endif %}
 
                         {% if app.user and 'ROLE_TEACHER' in app.user.roles %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('teacher') }}">
-                                    <button class="border rounded px-5 py-2">Admin</button>
-                                </a>
+                                <a class="nav-link site-nav-link" href="{{ path('teacher') }}">Leerkracht</a>
                             </li>
                         {% endif %}
-
                     </ul>
 
-                    <ul class="navbar-nav col-4">
-
+                    <div class="site-nav-actions">
                         {% if app.user %}
-                            <li class="nav-item">
-                                <a href="{{ path('app_logout') }}" class="nav-link">
-                                    <button class="border rounded px-5 py-2">Uitloggen</button>
-                                </a>
-                            </li>
+                            <span class="site-user-name d-none d-xl-inline">{{ app.user.firstName }}</span>
+                            <a href="{{ path('app_logout') }}" class="btn site-nav-action">Uitloggen</a>
                         {% else %}
-                            <li class="nav-item m-3">
-                                <a href="{{ path('app_login') }}" class="nav-link">
-                                    <button class="border rounded px-5 py-2">Inloggen</button>
-                                </a>
-                            </li>
+                            <a href="{{ path('app_login') }}" class="btn site-nav-action">Inloggen</a>
                         {% endif %}
-
-                    </ul>
-
+                    </div>
                 </div>
             </div>
         </nav>
 
         {% block body %}{% endblock %}
 
-        <div class="container-fluid bg-primary position-absolute py-1">
+        <footer class="container-fluid site-footer mt-auto py-3">
 
             <div class="row">
 
@@ -130,12 +98,7 @@
 
                 <div class="col-2">
                     <ul>
-                        {% if app.user %}
-                            <li class="list-group-item"><a class="btn">Profile</a></li>
-                        {% else %}
-                            <li class="list-group-item"><a class="btn">Login</a></li>
-                            <li class="list-group-item"><a class="btn">Register</a></li>
-                        {% endif %}
+                  
 
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                             <li class="list-group-item"><a class="btn">Admin</a></li>
@@ -144,7 +107,7 @@
                 </div>
 
             </div>
-        </div>
+        </footer>
 
     </body>
 </html>

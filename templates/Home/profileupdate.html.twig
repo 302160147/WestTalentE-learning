@@ -3,32 +3,63 @@
 {% block title %}West Talent E-Learning{% endblock %}
 
 {% block body %}
-    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
-        <div class="container w-100">
-            <h1>Gegevens bewerken</h1>
-            <a href="{{ path('app_profile') }}">
-                <button class="border rounded bg-info px-5 py-2">Terug</button>
-            </a>
-            <div class="row">
-                <div>
-                    {{ form_errors(form) }}
+    <main class="profile-page">
+        <div class="container py-5">
+            <div class="profile-edit-layout">
+                <a href="{{ path('app_profile') }}" class="profile-back-link">
+                    <span aria-hidden="true">←</span> Terug naar profiel
+                </a>
 
+                <section class="profile-card profile-edit-card">
+                    <div class="profile-card-header mb-4">
+                        <div>
+                            <span class="profile-eyebrow">Accountinstellingen</span>
+                            <h1 class="profile-form-title">Gegevens bewerken</h1>
+                        </div>
+                    </div>
+
+                    {{ form_errors(form) }}
                     {{ form_start(form) }}
-                    {{ form_row(form.firstName,{
-                        label: 'Voornaam'
-                    }) }}
-                    {{ form_row(form.lastName,{
-                        label: 'Achternaam'
-                    }) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.password,{
-                        label: 'Wachtwoord'
-                    }) }}
-                    <button type="submit" class="btn btn-info">Gegevens updaten</button>
-                    {{ form_rest(form) }}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.firstName, {
+                                    label: 'Voornaam',
+                                    attr: {'class': 'form-control profile-form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.lastName, {
+                                    label: 'Achternaam',
+                                    attr: {'class': 'form-control profile-form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.email, {
+                                    label: 'E-mailadres',
+                                    help: 'Je e-mailadres kan hier niet worden aangepast.',
+                                    attr: {
+                                        'class': 'form-control profile-form-control',
+                                        'autocomplete': 'email',
+                                        'inputmode': 'email'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.password, {
+                                    label: 'Nieuw wachtwoord',
+                                    help: 'Laat leeg om je huidige wachtwoord te behouden.',
+                                    attr: {'class': 'form-control profile-form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                        <div class="profile-form-actions">
+                            <a href="{{ path('app_profile') }}" class="btn profile-secondary-btn">Annuleren</a>
+                            <button type="submit" class="btn profile-primary-btn">Wijzigingen opslaan</button>
+                        </div>
+                        {{ form_rest(form) }}
                     {{ form_end(form, {'render_rest': false}) }}
-                </div>
+                </section>
             </div>
         </div>
-    </div>
+    </main>
 {% endblock %}

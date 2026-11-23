@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class HomeController extends AbstractController
 {
@@ -28,13 +29,22 @@ final class HomeController extends AbstractController
         return $this->render('home/profile.html.twig');
     }
     #[Route('/Profiel/Update/{id}', name: 'app_profile_update')]
-    public function update(EntityManagerInterface $entityManager, Request $request, int $id ): Response
+    public function update(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        int $id
+    ): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+            $plainPassword = $form->get('password')->getData();
+            if ($plainPassword) {
+                $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            }
             $entityManager->persist($user);
             $entityManager->flush();
 

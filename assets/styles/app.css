@@ -1,6 +1,447 @@
 body {
-    background-color: #fff;
+    background-color: #f5f7fb;
+    color: #172033;
+    font-family: var(--bs-body-font-family);
 }
-/*background-image {*/
-/* var(--bs-gradient);*/
-/*}*/
+
+:root {
+    --profile-primary: #1d4ed8;
+    --profile-primary-dark: #1e3a8a;
+    --profile-border: #e6eaf2;
+}
+
+.site-navbar {
+    min-height: 64px;
+    background: #fff;
+    border-bottom: 1px solid var(--profile-border);
+    box-shadow: 0 4px 18px rgba(37, 51, 78, 0.06);
+}
+
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.site-brand img {
+    width: auto;
+    object-fit: contain;
+}
+
+.site-navbar-toggler {
+    border: 1px solid var(--profile-border);
+    border-radius: 8px;
+}
+
+.site-nav {
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.site-nav-link {
+    border-radius: 8px;
+    color: #475569;
+    font-weight: 700;
+    padding: 0.6rem 0.75rem;
+}
+
+.site-nav-link:hover,
+.site-nav-link.active {
+    background: #eff6ff;
+    color: var(--profile-primary);
+}
+
+.site-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.site-user-name {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.site-nav-action {
+    border: 1px solid var(--profile-primary);
+    border-radius: 8px;
+    background: var(--profile-primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.55rem 0.9rem;
+}
+
+.site-nav-action:hover {
+    border-color: var(--profile-primary-dark);
+    background: var(--profile-primary-dark);
+    color: #fff;
+}
+
+.site-footer {
+    background: #fff;
+    color: #475569;
+    border-top: 1px solid var(--profile-border);
+}
+
+.site-footer .btn,
+.site-footer a,
+.site-footer .list-group-item {
+    color: #475569;
+}
+
+.site-footer .list-group-item {
+    background: transparent;
+    border: 0;
+}
+
+.profile-page {
+    min-height: 560px;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.08), transparent 28rem),
+        #f5f7fb;
+}
+
+.profile-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.profile-title,
+.profile-form-title {
+    margin: 0.25rem 0 0;
+    font-weight: 700;
+    letter-spacing: normal;
+}
+
+.profile-title {
+    font-size: clamp(1.75rem, 3vw, 2.35rem);
+}
+
+.profile-eyebrow {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.profile-card {
+    background: #fff;
+    border: 1px solid var(--profile-border);
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(37, 51, 78, 0.07);
+    padding: 1.75rem;
+}
+
+.profile-summary {
+    text-align: center;
+}
+
+.profile-avatar {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: #7d91ad;
+    color: #f1f5f9;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    filter: saturate(0.7) blur(0.2px);
+    box-shadow: none;
+}
+
+.profile-summary h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.profile-email {
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.profile-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    background: #ecfdf5;
+    color: #16794b;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.profile-status-muted {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.profile-card-header h2 {
+    margin: 0.2rem 0 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.profile-edit-link,
+.profile-back-link {
+    color: var(--profile-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.profile-edit-link:hover,
+.profile-back-link:hover {
+    color: var(--profile-primary-dark);
+}
+
+.profile-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0 0;
+}
+
+.profile-data-header {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--profile-border);
+}
+
+.profile-courses {
+    align-self: start;
+}
+
+.profile-details div {
+    border: 1px solid var(--profile-border);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.profile-details dt {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.profile-details dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-weight: 700;
+}
+
+.profile-primary-btn,
+.profile-secondary-btn,
+.profile-level-btn {
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 0.65rem 1rem;
+}
+
+.profile-primary-btn {
+    border: 1px solid var(--profile-primary);
+    background: var(--profile-primary);
+    color: #fff;
+}
+
+.profile-primary-btn:hover {
+    border-color: var(--profile-primary-dark);
+    background: var(--profile-primary-dark);
+    color: #fff;
+}
+
+.profile-secondary-btn {
+    border: 1px solid var(--profile-border);
+    background: #fff;
+    color: #334155;
+}
+
+.profile-secondary-btn:hover {
+    background: #f8fafc;
+    color: #172033;
+}
+
+.profile-alert {
+    border: 0;
+    border-radius: 12px;
+}
+
+.profile-course {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    border: 1px solid var(--profile-border);
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+.profile-course-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: var(--profile-primary);
+    font-weight: 700;
+}
+
+.profile-course-info h3,
+.profile-course-info p {
+    margin: 0;
+}
+
+.profile-course-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.profile-course-info p {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.profile-levels {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.profile-level-btn {
+    border: 1px solid #dbe4f0;
+    background: #fff;
+    color: #334155;
+}
+
+.profile-level-btn:hover,
+.profile-level-btn:focus {
+    border-color: #b8c7dc;
+    background: #f8fafc;
+    color: #172033;
+}
+
+.profile-edit-layout {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.profile-back-link {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.profile-edit-card {
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+
+.profile-form-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.profile-form-control {
+    min-height: 46px;
+    border: 1px solid #dfe5ef;
+    border-radius: 10px;
+}
+
+.profile-form-control:focus {
+    border-color: #93b4ef;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.profile-edit-card label {
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+}
+
+.profile-edit-card .form-text {
+    color: #94a3b8;
+}
+
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--profile-border);
+}
+
+@media (max-width: 768px) {
+    .site-navbar {
+        padding: 0.5rem 0;
+    }
+
+    .site-brand:nth-of-type(2) {
+        display: none;
+    }
+
+    .site-nav {
+        align-items: stretch;
+        gap: 0.25rem;
+        padding: 0.75rem 0;
+    }
+
+    .site-nav-link {
+        padding: 0.75rem;
+    }
+
+    .site-nav-actions {
+        padding-bottom: 0.25rem;
+    }
+
+    .site-nav-action {
+        width: 100%;
+        text-align: center;
+    }
+
+    .profile-heading,
+    .profile-course,
+    .profile-card-header {
+        align-items: flex-start;
+    }
+
+    .profile-heading {
+        flex-direction: column;
+    }
+
+    .profile-details {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-course {
+        grid-template-columns: auto 1fr;
+    }
+
+    .profile-levels {
+        grid-column: 1 / -1;
+        flex-wrap: wrap;
+    }
+
+    .profile-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .profile-form-actions .btn {
+        width: 100%;
+    }
+}
