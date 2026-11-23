@@ -10,10 +10,8 @@
                         <h2>Welkom op West Talent E-Learning</h2>
                     </div>
                     <div class="col-12 text-center bg-info-subtle border m-3">
-                        {% if app.user %}
-                            <a href="{{ path('app_profile') }}">
-                                <button class="border rounded bg-info">Profiel</button>
-                            </a>
+
+
                             <div class="row align-items-center">
                                 {% for vak in vakken %}
                                     <div class="col-4 ">
@@ -22,12 +20,18 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ vak.name }}</h5>
                                                 <p class="card-text">{{ vak.description }}</p>
+                                                {% if app.user %}
                                                 <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
                                 {% endfor %}
                             </div>
+                        {% if app.user %}
+                        <a href="{{ path('app_profile') }}">
+                            <button class="border rounded bg-info">Profiel</button>
+                        </a>
                         {% else %}
                             <a href="{{ path('app_login') }}">
                                 <button class="border rounded bg-info">Inloggen</button>

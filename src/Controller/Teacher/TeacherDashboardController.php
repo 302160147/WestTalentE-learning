@@ -43,8 +43,12 @@ class TeacherDashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkTo(SomeCrudController::class, 'The Label', 'fas fa-list');
         yield MenuItem::linkTo(TUserCrudController::class, 'Gebruikers', 'fa fa-users');
+        yield MenuItem::linkTo(TLessonCrudController::class, 'Lessen', 'fa fa-book');
+        yield MenuItem::linkTo(TAssignmentCrudController::class, 'Opdrachten', 'fa fa-tags');
+        yield MenuItem::linkTo(TAnswerOptionCrudController::class, 'Vragen', 'fa fa-tasks');
+        yield MenuItem::linkTo(TSubmissionCrudController::class, 'Feedback', 'fa fa-check');
+        yield MenuItem::linkTo(TPageCrudController::class, 'pagina', 'fa fa-folder-open');
 
     }
     public function configureActions(): Actions
