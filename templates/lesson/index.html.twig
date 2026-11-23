@@ -2,13 +2,8 @@
 
 {% block javascripts %}
  <script>
-{#     {% for page in lesson.pages %}#}
-     {#let page = {{ page.id }}#}
      function test(value){
-         {#const content = {{ page.content|nl2br }}#}
-         // document.getElementById("pages").innerHTML = value;
          document.getElementById("pages").className = value;
-
          {% for page in lesson.pages %}
          console.log({{ page.id }})
          console.log(value)
@@ -30,93 +25,95 @@
             </div>
         {% endfor %}
     {% endfor %}
-<div class="container bg-white py-5">
+    <div class="bg-info bg-gradient bg-opacity-50">
+        <div class="container py-5">
 
-    <h1 class="text-dark mb-4">
-        {{ lesson.name }}
-    </h1>
-    <div class="row g-4">
-        <div class="col-lg-7">
-            <p class="text-muted">
-                {{ lesson.description }}
-            </p>
-            <hr>
-            <div class="text-dark">
-                {{ lesson.contents|nl2br }}
-            </div>
-            <div>
-                <select onChange="test(this.value)" class="form-select" aria-label="Default select example">
-                    <option>Kies je pagina.</option>
-                    {% for page in lesson.pages %}
-                    {% if page.lesson.id == lesson.id %}
-                    <option value="{{ page.id }}">{{ page.title }}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-                <div id="pages" class="0">
-                {% for page in lesson.pages %}
-
-                    <div id="{{ page.id }}" class="visually-hidden">
-                        {{ page.title }}
-                        <br>
-                        {{ page.info }}
-                        <br>
-                        {{ page.content|nl2br }}
+            <h1 class="text-dark mb-4">
+                {{ lesson.name }}
+            </h1>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <p class="text-muted">
+                        {{ lesson.description }}
+                    </p>
+                    <hr>
+                    <div class="text-dark">
+                        {{ lesson.contents|nl2br }}
                     </div>
-                    <br>
-                {% endfor %}
+                    <div>
+                        <select onChange="test(this.value)" class="form-select" aria-label="Default select example">
+                            <option>Kies je pagina.</option>
+                            {% for page in lesson.pages %}
+                                {% if page.lesson.id == lesson.id %}
+                                    <option value="{{ page.id }}">{{ page.title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <div id="pages" class="0">
+                            {% for page in lesson.pages %}
+
+                                <div id="{{ page.id }}" class="visually-hidden">
+                                    {{ page.title }}
+                                    <br>
+                                    {{ page.info }}
+                                    <br>
+                                    {{ page.content|nl2br }}
+                                </div>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <form method="post" action="">
+                        <h2 class="text-dark mb-4">Vragen</h2>
+
+                        {% for assignment in lesson.assignments %}
+
+                            <div class="card shadow-sm border mb-4">
+
+                                <div class="card-body p-4">
+
+                                    <h5 class="mb-3">
+                                        {{ loop.index }}.
+                                        {% set description = assignment.question|split(',') %}
+                                        {% for i in description|slice(0) %}
+                                            <label class="form-check-label">
+                                                {{ (i) }}
+                                            </label>
+                                            <br>
+                                        {% endfor %}
+                                    </h5>
+
+                                    {% if assignment.questionType == 'Meerkeuze vraag' %}
+                                        {% if assignment.lesson.id == lesson.id %}
+                                            <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
+                                                <button class="btn btn-info">Maak vraag</button>
+                                            </a>
+                                        {% endif %}
+                                    {% elseif assignment.questionType == 'Juist onjuist vraag' %}
+                                        {% if assignment.lesson.id == lesson.id %}
+                                            <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
+                                                <button class="btn btn-info">Maak vraag</button>
+                                            </a>
+                                        {% endif %}
+                                    {% elseif assignment.questionType == 'Open vraag' %}
+                                        {% if assignment.lesson.id == lesson.id %}
+                                            <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
+                                                <button class="btn btn-info">Maak vraag</button>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">
+                                Er zijn nog geen vragen toegevoegd aan deze les.
+                            </p>
+                        {% endfor %}
+                    </form>
                 </div>
             </div>
         </div>
-            <div class="col-lg-5">
-                <form method="post" action="">
-                    <h2 class="text-dark mb-4">Vragen</h2>
-
-                    {% for assignment in lesson.assignments %}
-
-                        <div class="card shadow-sm border mb-4">
-
-                            <div class="card-body p-4">
-
-                                <h5 class="mb-3">
-                                    {{ loop.index }}.
-                                    {% set description = assignment.question|split(',') %}
-                                    {% for i in description|slice(0) %}
-                                        <label class="form-check-label">
-                                            {{ (i) }}
-                                        </label>
-                                        <br>
-                                    {% endfor %}
-                                </h5>
-
-                                {% if assignment.questionType == 'Meerkeuze vraag' %}
-                                    {% if assignment.lesson.id == lesson.id %}
-                                        <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
-                                            <button class="btn btn-info">Maak vraag</button>
-                                        </a>
-                                    {% endif %}
-                                {% elseif assignment.questionType == 'Juist onjuist vraag' %}
-                                    {% if assignment.lesson.id == lesson.id %}
-                                        <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
-                                            <button class="btn btn-info">Maak vraag</button>
-                                        </a>
-                                    {% endif %}
-                                {% elseif assignment.questionType == 'Open vraag' %}
-                                    {% if assignment.lesson.id == lesson.id %}
-                                        <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
-                                            <button class="btn btn-info">Maak vraag</button>
-                                        </a>
-                                    {% endif %}
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% else %}
-                        <p class="text-muted">
-                            Er zijn nog geen vragen toegevoegd aan deze les.
-                        </p>
-                    {% endfor %}
-                </form>
-            </div>
     </div>
-</div>
 {% endblock %}

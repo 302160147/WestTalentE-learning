@@ -20,7 +20,11 @@
                 {% if assignment.questionType == 'Meerkeuze vraag'  %}
                     <div>
                         {{ form_start(form) }}
-                        {{ form_row(form.answerOption) }}
+                        <div class="rounded bg-light">
+                            {{ form_row(form.answerOption,{
+                                label: 'Antwoord opties'
+                            }) }}
+                        </div>
                         <div class="visually-hidden" >
                             {{ form_row(form.submittedAt) }}
                             {{ form_row(form.user) }}
@@ -34,7 +38,11 @@
                 {% elseif assignment.questionType == 'Juist onjuist vraag'  %}
                     <div>
                         {{ form_start(formJ) }}
-                        {{ form_row(formJ.answerOption) }}
+                        <div class="rounded bg-light">
+                        {{ form_row(formJ.answerOption,{
+                            label: 'Correct of niet?'
+                        }) }}
+                        </div>
                         <div class="visually-hidden" >
                             {{ form_row(formJ.submittedAt) }}
                             {{ form_row(formJ.user) }}
