@@ -20,21 +20,15 @@ class LessonController extends AbstractController
     public function index(int $id, LessonRepository $lessonRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
         $lesson = $lessonRepository->find($id);
-        $submission = new Submission();
-        $form = $this->createForm(SubmissionType::class, $submission);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') )  {
-            $submission = $form->getData();
-            $entityManager->persist($submission);
-            $entityManager->flush();
-        }
+        $submissions = $entityManager->getRepository(Submission::class)->findAll();
         if (!$lesson) {
             throw $this->createNotFoundException('Lesson not found');
         }
 
         return $this->render('lesson/index.html.twig', [
             'lesson' => $lesson,
-            'submissionform' => $form
+            'submissions' => $submissions,
+
         ]);
     }
     #[Route('/lesson/opdracht/{id}', name: 'app_opdracht')]

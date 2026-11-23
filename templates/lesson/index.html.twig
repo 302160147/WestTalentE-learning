@@ -68,7 +68,7 @@
                     <form method="post" action="">
                         <h2 class="text-dark mb-4">Vragen</h2>
 
-                        {% for assignment in lesson.assignments %}
+                        {% for assignment in lesson.assignments  %}
 
                             <div class="card shadow-sm border mb-4">
 
@@ -87,21 +87,50 @@
 
                                     {% if assignment.questionType == 'Meerkeuze vraag' %}
                                         {% if assignment.lesson.id == lesson.id %}
-                                            <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
-                                                <button class="btn btn-info">Maak vraag</button>
-                                            </a>
+                                            {% for submission in lesson.submissions|slice(1) %}
+                                                {% if submission.user.id !== app.user.id %}
+                                                    <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
+                                                        <button class="btn btn-info">Maak vraag</button>
+                                                    </a>
+                                                {% else %}
+                                                    <div>Deze vraag is gemaakt!</div>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
                                     {% elseif assignment.questionType == 'Juist onjuist vraag' %}
                                         {% if assignment.lesson.id == lesson.id %}
+{#                                            {% for submission in lesson.submissions %}#}
+{#                                                {{ assignment.id }}#}
+{#                                                {{ submission.assignment.id }}#}
+{#                                            {% if assignment.id !== assignment.submissions.id %}#}
                                             <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
                                                 <button class="btn btn-info">Maak vraag</button>
                                             </a>
+                                            {{ assignment.id }}
+                                            {% for submission in submissions %}
+                                            {{ submission.assignment.id }}
+                                                {% if submission.assignment.id == assignment.id %}
+                                                <div>hi</div>
+                                                {% else %}
+                                                <div>hello</div>
+                                                {% endif %}
+                                            {% endfor %}
+{#                                            {% else %}#}
+                                                <div>Deze vraag is gemaakt!</div>
+{#                                            {% endif %}#}
+{#                                            {% endfor %}#}
                                         {% endif %}
                                     {% elseif assignment.questionType == 'Open vraag' %}
                                         {% if assignment.lesson.id == lesson.id %}
+                                            {% for submission in lesson.submissions|slice(1) %}
+                                            {% if submission.user.id !== app.user.id %}
                                             <a href="{{ path('app_opdracht', {id: assignment.id}) }}">
                                                 <button class="btn btn-info">Maak vraag</button>
                                             </a>
+                                            {% else %}
+                                                <div>Deze vraag is gemaakt!</div>
+                                            {% endif %}
+                                            {% endfor %}
                                         {% endif %}
                                     {% endif %}
                                 </div>
