@@ -3,16 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Assignment;
-use App\Entity\Lesson;
-use App\Entity\User;
-use App\Entity\Page;
 use App\Entity\Submission;
-use App\Entity\AnswerOption;
 use App\Form\SubmissionType;
 use App\Form\SubmissionJType;
 use App\Form\SubmissionOType;
 use App\Repository\LessonRepository;
-use App\Repository\PageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,9 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Niveau;
 use App\Entity\Submission;
-use App\Entity\Vak;
 use App\Entity\User;
 use App\Entity\Assignment;
 use App\Entity\AnswerOption;
@@ -12,7 +10,6 @@ use App\Entity\Lesson;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 

@@ -7,8 +7,6 @@ use App\Entity\Assignment;
 use App\Entity\Lesson;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Repository\AnswerOptionRepository;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
 
 class SubmissionType extends AbstractType

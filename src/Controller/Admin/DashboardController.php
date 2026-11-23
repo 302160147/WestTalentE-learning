@@ -10,10 +10,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Entity\User;
 
-//#[isGranted("ROLE_ADMIN")]
+
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
@@ -48,7 +46,6 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-//        yield MenuItem::linkToCrud('Users', 'fa fa-users', User::Class);
         yield MenuItem::linkTo(UserCrudController::class, 'Gebruikers', 'fa fa-users');
         yield MenuItem::linkTo(ModuleCrudController::class, 'Modules', 'fa fa-folder');
         yield MenuItem::linkTo(LessonCrudController::class, 'Lessen', 'fa fa-book');
@@ -56,7 +53,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(AnswerOptionCrudController::class, 'Vragen', 'fa fa-tasks');
         yield MenuItem::linkTo(SubmissionCrudController::class, 'Feedback', 'fa fa-check');
         yield MenuItem::linkTo(PageCrudController::class, 'pagina', 'fa fa-folder-open');
-        // yield MenuItem::linkTo(SomeCrudController::class, 'The Label', 'fas fa-list');
     }
 
     public function configureActions(): Actions
