@@ -1,42 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Inloggen{% endblock %}
 
 {% block body %}
-    <div style="height: 640px " class="bg-info bg-gradient bg-opacity-50">
-        <div class="container">
-            <form method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
+    <main class="login-page">
+        <div class="container py-4 py-lg-5">
+            <section class="login-card">
+                <div class="login-intro">
+                    <h1>Welkom terug</h1>
+                    <p>Log in om verder te gaan met je lessen.</p>
+                </div>
 
-                {% if app.user %}
-                    <div class="mb-3">
-                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+                {% if error %}
+                    <div class="alert alert-danger login-error" role="alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
                     </div>
                 {% endif %}
 
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <label for="username">Email</label>
-                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-                <label for="password">Password</label>
-                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                {% if app.user %}
+                    <div class="login-session-notice">
+                        Je bent ingelogd als <strong>{{ app.user.userIdentifier }}</strong>.
+                        <a href="{{ logout_path() }}">Uitloggen</a>
+                    </div>
+                {% else %}
+                    <form method="post" class="login-form">
+                        <div class="login-field">
+                            <label for="username">E-mailadres</label>
+                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" placeholder="naam@voorbeeld.nl" required autofocus>
+                        </div>
 
-                {#
-                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                See https://symfony.com/doc/current/security/remember_me.html
+                        <div class="login-field">
+                            <label for="password">Wachtwoord</label>
+                            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Vul je wachtwoord in" required>
+                        </div>
 
-                <div class="checkbox mb-3">
-                    <input type="checkbox" name="_remember_me" id="_remember_me">
-                    <label for="_remember_me">Remember me</label>
-                </div>
-                #}
-                    <br>
-                <button class="btn btn-lg btn-primary" type="submit">
-                    Sign in
-                </button>
-            </form>
+                        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                        <button class="btn login-submit" type="submit">
+                            Inloggen
+                            <span aria-hidden="true">&rarr;</span>
+                        </button>
+                    </form>
+                {% endif %}
+            </section>
         </div>
-    </div>
+    </main>
 {% endblock %}

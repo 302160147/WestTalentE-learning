@@ -585,6 +585,112 @@ body {
     color: #60799a;
 }
 
+.login-page {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    min-height: 480px;
+    background: #f5f7fb;
+}
+
+.login-page .container {
+    width: 100%;
+}
+
+.login-card {
+    width: min(100%, 420px);
+    margin: 0 auto;
+    border: 1px solid var(--profile-border);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(37, 51, 78, 0.06);
+    padding: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.login-intro {
+    margin-bottom: 1.25rem;
+}
+
+.login-intro h1 {
+    margin: 0;
+    color: #183a63;
+    font-size: 1.65rem;
+    font-weight: 750;
+}
+
+.login-intro > p:last-child {
+    margin: 0.4rem 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.login-field label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.login-field .form-control {
+    min-height: 44px;
+    border: 1px solid #dfe5ef;
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+}
+
+.login-field .form-control:focus {
+    border-color: #93b4ef;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.login-submit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.35rem;
+    border: 1px solid var(--profile-primary);
+    border-radius: 8px;
+    background: var(--profile-primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.65rem 0.9rem;
+}
+
+.login-submit:hover,
+.login-submit:focus {
+    border-color: var(--profile-primary-dark);
+    background: var(--profile-primary-dark);
+    color: #fff;
+}
+
+.login-error {
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.login-session-notice {
+    border-radius: 10px;
+    background: #f3f7fd;
+    color: #475569;
+    line-height: 1.6;
+    padding: 1rem;
+}
+
+.login-session-notice a {
+    display: inline-block;
+    margin-left: 0.25rem;
+    color: var(--profile-primary);
+    font-weight: 700;
+}
+
 .module-page {
     min-height: 560px;
     background: #f5f7fb;

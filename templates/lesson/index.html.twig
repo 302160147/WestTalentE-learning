@@ -5,9 +5,7 @@
 {% block javascripts %}
 <script>
     function showLessonPage(value) {
-        const pages = document.querySelectorAll('[data-lesson-page]');
-
-        pages.forEach(function (page) {
+        document.querySelectorAll('[data-lesson-page]').forEach(function (page) {
             page.classList.toggle('d-none', page.dataset.lessonPage !== value);
         });
     }
@@ -109,14 +107,14 @@
                             {% endif %}
                         </div>
 
-                        {% for assignment in lesson.assignments  %}
+                        {% for assignment in lesson.assignments %}
                             <article class="lesson-question">
                                 <div class="lesson-question-number">{{ loop.index }}</div>
                                 <div class="lesson-question-body">
                                     <h3>
                                         {% set description = assignment.question|split(',') %}
-                                        {% for i in description|slice(0) %}
-                                            {{ i }}{% if not loop.last %}<br>{% endif %}
+                                        {% for item in description %}
+                                            {{ item }}{% if not loop.last %}<br>{% endif %}
                                         {% endfor %}
                                     </h3>
                                     <span class="lesson-question-type">{{ assignment.questionType }}</span>
