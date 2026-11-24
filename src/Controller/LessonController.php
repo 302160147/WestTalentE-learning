@@ -39,6 +39,7 @@ class LessonController extends AbstractController
         $lesson = $assignments->getLesson();
         $submission->setAssignment($assignments);
         $user = $this->getUser(); $submittedAt = new \DateTimeImmutable();
+        $alreadySubmitted = $entityManager->getRepository(Submission::class)->findOneBy(['user' => $user, 'assignment' => $assignments]);
         $form = $this->createForm(SubmissionType::class, $submission);
         $formJ = $this->createForm(SubmissionJType::class, $submission);
         $formO = $this->createForm(SubmissionOType::class, $submission);
@@ -89,12 +90,16 @@ class LessonController extends AbstractController
                 return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
             }
         }
+        if ($alreadySubmitted) {
+            $this->addFlash('info', 'You have already completed this assignment.');
+            return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+        }
         return $this->render('lesson/opdracht.html.twig',[
             'form' => $form,
             'formJ' => $formJ,
             'formO' => $formO,
             'assignment' => $assignments,
-            'lesson' => $lesson
+            'lesson' => $lesson,
         ]);
     }
 }
