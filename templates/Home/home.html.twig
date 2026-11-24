@@ -3,42 +3,92 @@
 {% block title %}West Talent E-Learning{% endblock %}
 
 {% block body %}
-    <div class="bg-info bg-gradient bg-opacity-50" style="height: 701px">
-            <div class="container w-100">
-                <div class="row">
-                    <div class="col-12 text-center bg-info-subtle border p-3 m-3">
-                        <h2>Welkom op West Talent E-Learning</h2>
-                    </div>
-                    <div class="col-12 text-center bg-info-subtle border m-3">
-
-
-                            <div class="row align-items-center">
-                                {% for vak in vakken %}
-                                    <div class="col-4 ">
-                                        <div class="card " style="width: 18rem;">
-                                            <img src="{{ vak.image }}" class="card-img-top" alt="Burgerschap">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ vak.name }}</h5>
-                                                <p class="card-text">{{ vak.description }}</p>
-                                                {% if app.user %}
-                                                <a href="{{ path('app_niveaus') }}" class="btn btn-primary">Open</a>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% if app.user %}
-                        <a href="{{ path('app_profile') }}">
-                            <button class="border rounded bg-info">Profiel</button>
-                        </a>
-                        {% else %}
-                            <a href="{{ path('app_login') }}">
-                                <button class="border rounded bg-info">Inloggen</button>
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
+<main class="home-page">
+    <div class="container py-4 py-lg-5">
+        <header class="home-hero">
+            <div class="home-hero-copy">
+                <p class="home-eyebrow">West Talent E-Learning</p>
+                <h1>
+                    {% if app.user %}
+                        Welkom terug{% if app.user.firstName %}, {{ app.user.firstName }}{% endif %}
+                    {% else %}
+                        Welkom op West Talent
+                    {% endif %}
+                </h1>
+                <p>
+                    {% if app.user %}
+                        Kies een vak en ga verder met je leertraject.
+                    {% else %}
+                        Leer op je eigen tempo met heldere lessen en praktische opdrachten.
+                    {% endif %}
+                </p>
             </div>
+
+            {% if app.user %}
+                <a href="{{ path('app_profile') }}" class="btn home-primary-action">
+                    Mijn profiel
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn home-primary-action">
+                    Inloggen
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            {% endif %}
+        </header>
+
+        <section class="home-courses" aria-labelledby="courses-heading">
+            <div class="home-section-heading">
+                <div>
+                    <p class="home-eyebrow">Leergebieden</p>
+                    <h2 id="courses-heading">Onze vakken</h2>
+                </div>
+                {% if vakken|length > 0 %}
+                    <span class="home-count">{{ vakken|length }} {{ vakken|length == 1 ? 'vak' : 'vakken' }}</span>
+                {% endif %}
+            </div>
+
+            <div class="row g-3 g-lg-4">
+                {% for vak in vakken %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        {% if app.user %}
+                            <a href="{{ path('app_niveaus') }}" class="home-course-card">
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="home-course-card">
+                        {% endif %}
+                            {% if vak.image %}
+                                <div class="home-course-image-wrap">
+                                    {% if vak.name|lower == 'burgerschap' %}
+                                        <img src="{{ asset('images/Maatschappij.jpg') }}" class="home-course-image" alt="{{ vak.name }}">
+                                    {% else %}
+                                        {% set imageName = vak.image|split('/')|last %}
+                                        <img src="{{ asset('images/' ~ imageName) }}" class="home-course-image" alt="{{ vak.name }}">
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            <div class="home-course-content">
+                                <p class="home-course-label">Vak</p>
+                                <h3>{{ vak.name }}</h3>
+                                {% if vak.description %}
+                                    <p class="home-course-description">{{ vak.description }}</p>
+                                {% endif %}
+                                <span class="home-course-link">
+                                    {% if app.user %}Bekijken{% else %}Inloggen om te bekijken{% endif %}
+                                    <span aria-hidden="true">&rarr;</span>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="home-empty-state">
+                            <h3>Nog geen vakken beschikbaar</h3>
+                            <p>Er zijn momenteel nog geen leergebieden toegevoegd.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
     </div>
+</main>
 {% endblock %}

@@ -1,78 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="bg-info bg-gradient bg-opacity-50" style="height: 778px">
-        <a class="btn btn-info" href="{{ path('app_lesson', {'id':assignment.lesson.id}) }}">terug naar les</a>
+{% block title %}Opdracht - {{ assignment.lesson.name }}{% endblock %}
 
-        <div class="container">
-            <div class="row">
-                <h1 class="rounded bg-light p-3">
-                   <div>
-                       {% set description = assignment.question|split(',') %}
-                       {% for i in description|slice(0) %}
-                           <h3>
-                               {{ (i) }}
-                           </h3>
-                           <br>
-                       {% endfor %}
-                   </div>
-                </h1>
-                {% if assignment.questionType == 'Meerkeuze vraag'  %}
-                    <div>
-                        {{ form_start(form) }}
-                        <div class="rounded bg-light">
-                            {{ form_row(form.answerOption,{
-                                label: 'Antwoord opties'
-                            }) }}
-                        </div>
-                        <div class="visually-hidden" >
-                            {{ form_row(form.submittedAt) }}
-                            {{ form_row(form.user) }}
-                            {{ form_row(form.assignment) }}
-                            {{ form_row(form.lesson) }}
-                        </div>
-                        {{ form_widget(form._token) }}
-                        <button type="submit" class="btn btn-info">Verstuur</button>
-                        {{ form_end(form, {'render_rest': false}) }}
+{% block body %}
+    <main class="assignment-page">
+        <div class="container py-4 py-lg-5">
+            <a class="assignment-back-link" href="{{ path('app_lesson', {'id': assignment.lesson.id}) }}">
+                <span aria-hidden="true">&larr;</span>
+                Terug naar les
+            </a>
+
+            <div class="assignment-layout">
+                <section class="assignment-card" aria-labelledby="assignment-question-heading">
+                    <p class="assignment-eyebrow">{{ assignment.questionType }}</p>
+                    <h1 id="assignment-question-heading">Opdracht</h1>
+                    <div class="assignment-question">
+                        {% set description = assignment.question|split(',') %}
+                        {% for item in description %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
                     </div>
-                {% elseif assignment.questionType == 'Juist onjuist vraag'  %}
-                    <div>
-                        {{ form_start(formJ) }}
-                        <div class="rounded bg-light">
-                        {{ form_row(formJ.answerOption,{
-                            label: 'Correct of niet?'
-                        }) }}
-                        </div>
-                        <div class="visually-hidden" >
-                            {{ form_row(formJ.submittedAt) }}
-                            {{ form_row(formJ.user) }}
-                            {{ form_row(formJ.assignment) }}
-                            {{ form_row(formJ.lesson) }}
-                        </div>
-                        {{ form_widget(formJ._token) }}
-                        <button type="submit" class="btn btn-info">Verstuur</button>
-                        {{ form_end(formJ, {'render_rest': false}) }}
-                    </div>
-                {% elseif assignment.questionType == 'Open vraag' %}
-                    <div>
-                        {{ form_start(formO) }}
-                        {{ form_row(formO.answerText,{
-                            label: 'Antwoord'
-                        }) }}
-                        <div class="visually-hidden" >
-                            {{ form_row(formO.submittedAt) }}
-                            {{ form_row(formO.user) }}
-                            {{ form_row(formO.assignment) }}
-                            {{ form_row(formO.lesson) }}
-                        </div>
-                        {{ form_widget(formO._token) }}
-                        <button type="submit" class="btn btn-info">Verstuur</button>
-                        {{ form_end(formO, {'render_rest': false}) }}
-                    </div>
-                {% endif %}
+
+                    {% if assignment.questionType == 'Meerkeuze vraag' %}
+                        {{ form_start(form, {attr: {class: 'assignment-answer-form'}}) }}
+                            <div class="assignment-answer-field">
+                                {{ form_row(form.answerOption, {label: 'Kies je antwoord'}) }}
+                            </div>
+                            <div class="visually-hidden">
+                                {{ form_row(form.submittedAt) }}
+                                {{ form_row(form.user) }}
+                                {{ form_row(form.assignment) }}
+                                {{ form_row(form.lesson) }}
+                            </div>
+                            {{ form_widget(form._token) }}
+                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
+                        {{ form_end(form, {render_rest: false}) }}
+                    {% elseif assignment.questionType == 'Juist onjuist vraag' %}
+                        {{ form_start(formJ, {attr: {class: 'assignment-answer-form'}}) }}
+                            <div class="assignment-answer-field">
+                                {{ form_row(formJ.answerOption, {label: 'Kies je antwoord'}) }}
+                            </div>
+                            <div class="visually-hidden">
+                                {{ form_row(formJ.submittedAt) }}
+                                {{ form_row(formJ.user) }}
+                                {{ form_row(formJ.assignment) }}
+                                {{ form_row(formJ.lesson) }}
+                            </div>
+                            {{ form_widget(formJ._token) }}
+                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
+                        {{ form_end(formJ, {render_rest: false}) }}
+                    {% elseif assignment.questionType == 'Open vraag' %}
+                        {{ form_start(formO, {attr: {class: 'assignment-answer-form'}}) }}
+                            <div class="assignment-answer-field">
+                                {{ form_row(formO.answerText, {label: 'Jouw antwoord'}) }}
+                            </div>
+                            <div class="visually-hidden">
+                                {{ form_row(formO.submittedAt) }}
+                                {{ form_row(formO.user) }}
+                                {{ form_row(formO.assignment) }}
+                                {{ form_row(formO.lesson) }}
+                            </div>
+                            {{ form_widget(formO._token) }}
+                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
+                        {{ form_end(formO, {render_rest: false}) }}
+                    {% endif %}
+                </section>
             </div>
         </div>
-    </div>
-
+    </main>
 {% endblock %}
-

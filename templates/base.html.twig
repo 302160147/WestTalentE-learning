@@ -70,7 +70,7 @@
 
                     <div class="site-nav-actions">
                         {% if app.user %}
-                            <span class="site-user-name d-none d-xl-inline">{{ app.user.firstName }}</span>
+                            <a href="{{ path('app_profile') }}" class="site-user-name d-none d-xl-inline">{{ app.user.firstName }}</a>
                             <a href="{{ path('app_logout') }}" class="btn site-nav-action">Uitloggen</a>
                         {% else %}
                             <a href="{{ path('app_login') }}" class="btn site-nav-action">Inloggen</a>
