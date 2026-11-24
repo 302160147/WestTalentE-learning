@@ -91,7 +91,7 @@ class LessonController extends AbstractController
             }
         }
         if ($alreadySubmitted) {
-            $this->addFlash('info', 'You have already completed this assignment.');
+            $this->addFlash('info', 'Je hebt deze opdracht al gemaakt.');
             return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
         }
         return $this->render('lesson/opdracht.html.twig',[

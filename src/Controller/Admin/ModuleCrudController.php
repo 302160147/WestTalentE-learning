@@ -35,13 +35,11 @@ class ModuleCrudController extends AbstractCrudController
             ->setLabel('Naam');
 
         yield AssociationField::new('vak')
-            ->setSortProperty('vak.name')
             ->autocomplete(callback: static fn (Vak $vak): string => sprintf('%s', $vak->getName()));
 
 
         yield AssociationField::new('niveau')
             ->autocomplete(callback: static fn (niveau $module): string => sprintf('%s', $module->getNiveau()))
-            ->setSortProperty('niveau')
         ;
     }
 }

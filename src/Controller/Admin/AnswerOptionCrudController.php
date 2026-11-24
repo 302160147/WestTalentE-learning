@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -34,8 +35,8 @@ class AnswerOptionCrudController extends AbstractCrudController
                     ->setLabel('Meerkeuze of juist/onjuist vraag opties');
             }
 
-        yield IntegerField::new('isCorrect')
-            ->setLabel('Is de vraag goed of niet?');
+        yield TextareaField::new('isCorrect')
+            ->setLabel('Wat is het goede antwoord');
 
         yield AssociationField::new('assignment')
             ->autocomplete(callback: static fn (assignment $assignment): string => sprintf('%s', $assignment->getId()),)

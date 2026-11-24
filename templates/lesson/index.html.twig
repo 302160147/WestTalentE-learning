@@ -122,6 +122,20 @@
                                         Maak vraag
                                         <span aria-hidden="true">&rarr;</span>
                                     </a>
+                                    {% for correct in assignment.answerOptions %}
+                                    {% for submission in lesson.submissions %}
+                                            {% if submission.assignment.id == assignment.id %}
+                                                {% if submission.answerText == correct.isCorrect %}
+                                               <div class="">Deze vraag is goed. </div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if submission.assignment.id == assignment.id %}
+                                                {% if submission.answerText !== correct.isCorrect %}
+                                                    <div>Deze vraag is niet goed.</div>
+                                                {% endif %}
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
                                 </div>
                             </article>
                         {% else %}

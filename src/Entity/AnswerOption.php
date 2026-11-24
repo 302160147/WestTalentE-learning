@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AnswerOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnswerOptionRepository::class)]
@@ -18,8 +19,8 @@ class AnswerOption
     #[ORM\Column(length: 255)]
     private ?string $optionText = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $isCorrect = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $isCorrect = null;
 
     #[ORM\ManyToOne(inversedBy: 'answerOptions')]
     private ?Assignment $assignment = null;
@@ -56,12 +57,12 @@ class AnswerOption
         return $this;
     }
 
-    public function getIsCorrect(): ?int
+    public function getIsCorrect(): ?string
     {
         return $this->isCorrect;
     }
 
-    public function setIsCorrect(?int $isCorrect): static
+    public function setIsCorrect(?string $isCorrect): static
     {
         $this->isCorrect = $isCorrect;
 

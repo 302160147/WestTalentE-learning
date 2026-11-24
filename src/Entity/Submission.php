@@ -19,8 +19,8 @@ class Submission
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $answerText = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $isCorrect = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $isCorrect = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $feedback = null;
@@ -67,12 +67,12 @@ class Submission
         return $this;
     }
 
-    public function getIsCorrect(): ?int
+    public function getIsCorrect(): ?string
     {
         return $this->isCorrect;
     }
 
-    public function setIsCorrect(?int $isCorrect): static
+    public function setIsCorrect(?string $isCorrect): static
     {
         $this->isCorrect = $isCorrect;
 
