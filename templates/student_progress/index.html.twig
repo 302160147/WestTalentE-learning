@@ -1,77 +1,56 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Studentvoortgang{% endblock %}
+
 {% block body %}
+    <main class="student-progress-page">
+        <div class="container py-4 py-lg-5">
+            <header class="student-progress-heading">
+                <div>
+                    <p class="module-eyebrow">Overzicht</p>
+                    <h1>Studentvoortgang</h1>
+                    <p>Kies een student om de voortgang en opdrachten in detail te bekijken.</p>
+                </div>
+            </header>
 
-<div class="container py-5">
-    <h1 class="text-dark mb-4">Studentvoortgang</h1>
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
-            <h2 class="text-dark fs-4 mb-4">Voortgang van studenten</h2>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Student</th>
-                            <th>Module</th>
-                            <th>Les</th>
-                            <th>Voltooide lessen</th>
-                            <th>Totaal lessen</th>
-                            <th>Status</th>
-                            <th>Voortgang</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
 
-                        {% for progress in studentProgresses %}
-
+            <section class="student-progress-card">
+                <div class="table-responsive">
+                    <table class="table student-progress-table align-middle mb-0">
+                        <thead>
                             <tr>
-                                <td>{{ progress.user.firstName }} {{ progress.user.lastName }}</td>
-                                <td>{{ progress.module.name }}</td>
-                                <td>{{ progress.lesson.name }}</td>
-                                <td>{{ progress.completedLesson }}</td>
-                                <td>{{ progress.totalLessons }}</td>
-
-                                <td>
-                                    {% if progress.status == 'Voltooid' %}
-                                        <span class="badge bg-success">Voltooid</span>
-                                    {% elseif progress.status == 'Bezig' %}
-                                        <span class="badge bg-warning text-dark">Bezig</span>
-                                    {% else %}
-                                        <span class="badge bg-secondary">{{ progress.status }}</span>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    {% set percentage = progress.totalLessons > 0 ? (progress.completedLesson / progress.totalLessons * 100)|round : 0 %}
-
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-primary"
-                                             style="width: {{ percentage }}%">
-                                            {{ percentage }}%
-                                        </div>
-                                    </div>
-                                </td>
+                                <th scope="col">Student</th>
+                                <th scope="col">Niveau</th>
+                                <th scope="col">Details</th>
                             </tr>
-
-                        {% else %}
-
-                            <tr>
-                                <td colspan="7" class="text-center text-muted py-4">
-                                    Er is nog geen voortgang geregistreerd.
-                                </td>
-                            </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
+                        </thead>
+                        <tbody>
+                            {% for row in studentRows %}
+                                <tr>
+                                    <th scope="row" class="student-name-cell">
+                                        {{ row.student.firstName }} {{ row.student.lastName }}
+                                    </th>
+                                    <td>{{ row.niveau ? row.niveau.niveau : 'Niet toegewezen' }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary text-nowrap" href="{{ path('app_student_progress_detail', {studentId: row.student.id}) }}">
+                                            Bekijk voortgang
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">
+                                        Er zijn nog geen studenten geregistreerd.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
-    </div>
-
-</div>
-
+    </main>
 {% endblock %}

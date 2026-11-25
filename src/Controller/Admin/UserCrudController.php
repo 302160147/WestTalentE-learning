@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
@@ -51,6 +52,10 @@ class UserCrudController extends AbstractCrudController
 
         yield EmailField::new('email')
             ->setLabel('email');
+
+        yield AssociationField::new('niveau')
+            ->setLabel('Niveau')
+            ->autocomplete();
 
         yield TextField::new('password')
             ->setFormType(RepeatedType::class)

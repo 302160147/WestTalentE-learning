@@ -21,49 +21,16 @@
                         {% endfor %}
                     </div>
 
-                    {% if assignment.questionType == 'Meerkeuze vraag' %}
-                        {{ form_start(form, {attr: {class: 'assignment-answer-form'}}) }}
-                            <div class="assignment-answer-field">
+                    {{ form_start(form, {attr: {class: 'assignment-answer-form'}}) }}
+                        <div class="assignment-answer-field">
+                            {% if assignment.questionType == 'Open vraag' %}
+                                {{ form_row(form.answerText, {label: 'Jouw antwoord'}) }}
+                            {% else %}
                                 {{ form_row(form.answerOption, {label: 'Kies je antwoord'}) }}
-                            </div>
-                            <div class="visually-hidden">
-                                {{ form_row(form.submittedAt) }}
-                                {{ form_row(form.user) }}
-                                {{ form_row(form.assignment) }}
-                                {{ form_row(form.lesson) }}
-                            </div>
-                            {{ form_widget(form._token) }}
-                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
-                        {{ form_end(form, {render_rest: false}) }}
-                    {% elseif assignment.questionType == 'Juist onjuist vraag' %}
-                        {{ form_start(formJ, {attr: {class: 'assignment-answer-form'}}) }}
-                            <div class="assignment-answer-field">
-                                {{ form_row(formJ.answerOption, {label: 'Kies je antwoord'}) }}
-                            </div>
-                            <div class="visually-hidden">
-                                {{ form_row(formJ.submittedAt) }}
-                                {{ form_row(formJ.user) }}
-                                {{ form_row(formJ.assignment) }}
-                                {{ form_row(formJ.lesson) }}
-                            </div>
-                            {{ form_widget(formJ._token) }}
-                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
-                        {{ form_end(formJ, {render_rest: false}) }}
-                    {% elseif assignment.questionType == 'Open vraag' %}
-                        {{ form_start(formO, {attr: {class: 'assignment-answer-form'}}) }}
-                            <div class="assignment-answer-field">
-                                {{ form_row(formO.answerText, {label: 'Jouw antwoord'}) }}
-                            </div>
-                            <div class="visually-hidden">
-                                {{ form_row(formO.submittedAt) }}
-                                {{ form_row(formO.user) }}
-                                {{ form_row(formO.assignment) }}
-                                {{ form_row(formO.lesson) }}
-                            </div>
-                            {{ form_widget(formO._token) }}
-                            <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
-                        {{ form_end(formO, {render_rest: false}) }}
-                    {% endif %}
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn assignment-submit">Verstuur antwoord</button>
+                    {{ form_end(form) }}
                 </section>
             </div>
         </div>

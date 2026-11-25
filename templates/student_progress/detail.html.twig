@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voortgang - {{ student.firstName }} {{ student.lastName }}{% endblock %}
+
+{% block body %}
+    <main class="student-progress-page">
+        <div class="container py-4 py-lg-5">
+            <a href="{{ path('app_student_progress') }}" class="student-progress-back">&larr; Terug naar overzicht</a>
+
+            <header class="student-progress-heading student-detail-heading">
+                <div>
+                    <p class="module-eyebrow">Studentdetails</p>
+                    <h1>{{ student.firstName }} {{ student.lastName }}</h1>
+                    <p>{{ student.email }} · Niveau: {{ student.niveau ? student.niveau.niveau : 'Niet toegewezen' }}</p>
+                </div>
+            </header>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+
+            <section aria-label="Voortgang per module" class="student-module-details">
+                {% if not student.niveau %}
+                    <div class="student-progress-card p-4 text-muted">
+                        Wijs deze student eerst een niveau toe via het beheer om de bijbehorende modules te tonen.
+                    </div>
+                {% endif %}
+                {% for item in studentModules %}
+                    <article class="student-module-detail-card">
+                        <header class="student-module-detail-header">
+                            <div>
+                                <h2>{{ item.module.name }}</h2>
+                                <p>{{ item.completed }} van {{ item.total }} lessen voltooid · {{ item.completedAssignments }} van {{ item.totalAssignments }} opdrachten afgerond</p>
+                            </div>
+                            <form method="post" action="{{ path('app_student_progress_status', {studentId: student.id}) }}" class="student-status-form">
+                                <input type="hidden" name="moduleId" value="{{ item.module.id }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('progress-status-' ~ student.id) }}">
+                                <label class="visually-hidden" for="status-{{ student.id }}-{{ item.module.id }}">Status voor {{ item.module.name }}</label>
+                                <select id="status-{{ student.id }}-{{ item.module.id }}" name="status" class="form-select form-select-sm">
+                                    {% for status in ['Nog niet gestart', 'Bezig', 'Voltooid', 'Goedgekeurd'] %}
+                                        <option value="{{ status }}" {% if item.status == status %}selected{% endif %}>{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Opslaan</button>
+                            </form>
+                        </header>
+
+                        <div class="progress student-detail-progress" role="progressbar" aria-label="Voortgang {{ item.module.name }}" aria-valuenow="{{ item.percentage }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-primary" style="width: {{ item.percentage }}%">{{ item.percentage }}%</div>
+                        </div>
+
+                        <div class="student-lesson-details">
+                            {% for lessonItem in item.lessons %}
+                                <section class="student-lesson-detail">
+                                    <div class="student-lesson-detail-heading">
+                                        <h3>{{ lessonItem.lesson.name }}</h3>
+                                        {% if lessonItem.completed %}
+                                            <span class="badge text-bg-success">Les gestart</span>
+                                        {% else %}
+                                            <span class="badge text-bg-secondary">Niet gestart</span>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if lessonItem.assignments is not empty %}
+                                        <ul class="student-detail-assignment-list">
+                                            {% for assignment in lessonItem.assignments %}
+                                                <li>
+                                                    <span>{{ assignment.question }}</span>
+                                                    {% if assignment.completed %}
+                                                        <span class="badge text-bg-success">Afgerond</span>
+                                                    {% else %}
+                                                        <span class="badge text-bg-secondary">Niet afgerond</span>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p class="text-muted mb-0">Deze les heeft nog geen opdrachten.</p>
+                                    {% endif %}
+                                </section>
+                            {% else %}
+                                <p class="text-muted mb-0">Deze module heeft nog geen lessen.</p>
+                            {% endfor %}
+                        </div>
+                    </article>
+                {% else %}
+                    <div class="student-progress-card p-4 text-muted">Er zijn nog geen modules beschikbaar.</div>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+{% endblock %}

@@ -56,34 +56,62 @@
                 </div>
 
                 <div class="col-lg-8">
-                    <section class="profile-card profile-courses h-100">
+                    <section class="profile-card profile-courses">
                         <div class="profile-card-header">
                             <div>
-                                <span class="profile-eyebrow">Studieaanbod</span>
-                                <h2>Mijn vakken</h2>
+                                <span class="profile-eyebrow">Mijn studie</span>
+                                <h2>Modules en opdrachten</h2>
                             </div>
                         </div>
-                        <div class="profile-course">
-                            <div class="profile-course-icon" aria-hidden="true">B</div>
-                            <div class="profile-course-info">
-                                <h3>Burgerschap</h3>
-                                <p>Kies een niveau om de modules te bekijken.</p>
-                            </div>
-                            <div class="profile-levels">
-                                {% for level in 2..4 %}
-                                    <div class="dropdown">
-                                        <button class="btn profile-level-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Niveau {{ level }}
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            {% for module in 1..4 %}
-                                                <li><a class="dropdown-item" href="#">Module {{ module }}</a></li>
-                                            {% endfor %}
-                                        </ul>
+
+                        {% if app.user.niveau %}
+                            <p class="profile-study-level">Jouw modules voor {{ app.user.niveau.niveau }}</p>
+
+                            {% for module in modules %}
+                                <article class="profile-module-card">
+                                    <div class="profile-module-heading">
+                                        <div>
+                                            <span class="profile-eyebrow">Module {{ loop.index }}</span>
+                                            <h3>{{ module.name }}</h3>
+                                        </div>
+                                        <a href="{{ path('app_module', {niveau: module.niveau.id, module: module.id}) }}" class="profile-edit-link">
+                                            Open module
+                                        </a>
                                     </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+
+                                    {% for lesson in module.lessons %}
+                                        <div class="profile-assignment-group">
+                                            <h4>{{ lesson.name }}</h4>
+                                            {% for assignment in lesson.assignments %}
+                                                {% set isCompleted = completedAssignmentIds[assignment.id] is defined %}
+                                                <div class="profile-assignment">
+                                                    <div class="profile-assignment-info">
+                                                        <p>{{ assignment.question }}</p>
+                                                        <span>{{ assignment.questionType }}</span>
+                                                    </div>
+                                                    <span class="profile-assignment-status {{ isCompleted ? 'is-complete' : 'is-pending' }}">
+                                                        {{ isCompleted ? 'Afgerond' : 'Nog te doen' }}
+                                                    </span>
+                                                    <a href="{{ isCompleted ? path('app_lesson', {id: lesson.id}) : path('app_opdracht', {id: assignment.id}) }}" class="profile-assignment-link">
+                                                        {{ isCompleted ? 'Bekijk les' : 'Naar opdracht' }}
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                <p class="profile-assignment-empty">Nog geen opdrachten in deze les.</p>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="profile-assignment-empty">Er zijn nog geen lessen in deze module.</p>
+                                    {% endfor %}
+                                </article>
+                            {% else %}
+                                <p class="profile-assignment-empty">Er zijn nog geen modules voor jouw niveau.</p>
+                            {% endfor %}
+                        {% else %}
+                            <p class="profile-assignment-empty">
+                                Er is nog geen niveau aan je account gekoppeld. Vraag een leerkracht om dit in te stellen.
+                            </p>
+                        {% endif %}
                     </section>
                 </div>
             </div>

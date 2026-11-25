@@ -22,16 +22,12 @@
                     {{ form_start(form) }}
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(form.firstName, {
-                                    label: 'Voornaam',
-                                    attr: {'class': 'form-control profile-form-control'}
-                                }) }}
+                                <label class="form-label" for="profile-first-name">Voornaam</label>
+                                <input id="profile-first-name" class="form-control profile-form-control" type="text" value="{{ form.vars.data.firstName }}" readonly>
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.lastName, {
-                                    label: 'Achternaam',
-                                    attr: {'class': 'form-control profile-form-control'}
-                                }) }}
+                                <label class="form-label" for="profile-last-name">Achternaam</label>
+                                <input id="profile-last-name" class="form-control profile-form-control" type="text" value="{{ form.vars.data.lastName }}" readonly>
                             </div>
                             <div class="col-12">
                                 {{ form_row(form.email, {

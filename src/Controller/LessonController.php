@@ -3,11 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Assignment;
+use App\Entity\Lesson;
+use App\Entity\Studentprogress;
 use App\Entity\Submission;
-use App\Form\SubmissionType;
+use App\Entity\User;
 use App\Form\SubmissionJType;
 use App\Form\SubmissionOType;
+use App\Form\SubmissionType;
 use App\Repository\LessonRepository;
+use App\Repository\StudentprogressRepository;
+use App\Repository\SubmissionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,90 +22,124 @@ use Symfony\Component\Routing\Attribute\Route;
 class LessonController extends AbstractController
 {
     #[Route('/lesson/{id}', name: 'app_lesson')]
-    public function index(int $id, LessonRepository $lessonRepository, EntityManagerInterface $entityManager, Request $request): Response
+    public function index(int $id, LessonRepository $lessonRepository, EntityManagerInterface $entityManager): Response
     {
         $lesson = $lessonRepository->find($id);
-        $submissions = $entityManager->getRepository(Submission::class)->findAll();
         if (!$lesson) {
             throw $this->createNotFoundException('Lesson not found');
         }
 
         return $this->render('lesson/index.html.twig', [
             'lesson' => $lesson,
-            'submissions' => $submissions,
-
+            'submissions' => $entityManager->getRepository(Submission::class)->findAll(),
         ]);
     }
+
     #[Route('/lesson/opdracht/{id}', name: 'app_opdracht')]
-    public function opdracht(EntityManagerInterface $entityManager, int $id, Request $request): Response
-    {
-        $submission = new Submission();
-        $assignments = $entityManager->getRepository(Assignment::class)->find($id);
-        $lesson = $assignments->getLesson();
-        $submission->setAssignment($assignments);
-        $user = $this->getUser(); $submittedAt = new \DateTimeImmutable();
-        $alreadySubmitted = $entityManager->getRepository(Submission::class)->findOneBy(['user' => $user, 'assignment' => $assignments]);
-        $form = $this->createForm(SubmissionType::class, $submission);
-        $formJ = $this->createForm(SubmissionJType::class, $submission);
-        $formO = $this->createForm(SubmissionOType::class, $submission);
-        $form->get('submittedAt')->setData($submittedAt); $form->get('user')->setData($user); $form->get('assignment')->setData($assignments); $form->get('lesson')->setData($lesson);
-        $formJ->get('submittedAt')->setData($submittedAt); $formJ->get('user')->setData($user); $formJ->get('assignment')->setData($assignments); $formJ->get('lesson')->setData($lesson);
-        $formO->get('submittedAt')->setData($submittedAt); $formO->get('user')->setData($user); $formO->get('assignment')->setData($assignments); $formO->get('lesson')->setData($lesson);
+    public function opdracht(
+        EntityManagerInterface $entityManager,
+        StudentprogressRepository $studentprogressRepository,
+        SubmissionRepository $submissionRepository,
+        int $id,
+        Request $request
+    ): Response {
+        $assignment = $entityManager->getRepository(Assignment::class)->find($id);
+        if (!$assignment instanceof Assignment || !$assignment->getLesson() instanceof Lesson) {
+            throw $this->createNotFoundException('Assignment not found');
+        }
 
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
 
+        $lesson = $assignment->getLesson();
+        if ($submissionRepository->findOneBy(['user' => $user, 'assignment' => $assignment])) {
+            $this->addFlash('info', 'You have already completed this assignment.');
+
+            return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
+        }
+
+        $submission = (new Submission())->setAssignment($assignment);
+        $formType = match ($assignment->getQuestionType()) {
+            'Meerkeuze vraag' => SubmissionType::class,
+            'Juist onjuist vraag' => SubmissionJType::class,
+            'Open vraag' => SubmissionOType::class,
+            default => throw $this->createNotFoundException('Unsupported assignment type'),
+        };
+        $form = $this->createForm($formType, $submission);
         $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid() && $request->isMethod('POST') ) {
-                $submission = $form->getData();
-                if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
-                    $entityManager->persist($submission);
-                    $entityManager->flush();
-                    $this->addFlash('success', 'Opdracht verstuurd.');
 
-                    return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-                } else {
-                    $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
-                    return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $submission = $form->getData();
+            $submission
+                ->setUser($user)
+                ->setAssignment($assignment)
+                ->setLesson($lesson)
+                ->setSubmittedAt(new \DateTimeImmutable());
+
+            $module = $lesson->getModule();
+            if (
+                $module
+                && $user->getNiveau()
+                && $module->getNiveau()?->getId() === $user->getNiveau()->getId()
+                && in_array('ROLE_STUDENT', $user->getRoles(), true)
+            ) {
+                $completedLessons = $submissionRepository->countCompletedLessonsForUserAndModule($user, $module);
+                if ($submissionRepository->countForUserAndLesson($user, $lesson) === 0) {
+                    ++$completedLessons;
+                }
+
+                foreach ($user->getNiveau()->getModules() as $progressModule) {
+                    $progress = $studentprogressRepository->findOneBy([
+                        'user' => $user,
+                        'module' => $progressModule,
+                    ]);
+
+                    if (!$progress) {
+                        $progress = (new Studentprogress())
+                            ->setUser($user)
+                            ->setModule($progressModule)
+                            ->setLesson(null)
+                            ->setCompletedLesson(0)
+                            ->setTotalLessons($progressModule->getLessons()->count())
+                            ->setStatus('Nog niet gestart');
+                    }
+
+                    $totalLessons = $progressModule->getLessons()->count();
+                    $wasApproved = $progress->getStatus() === 'Goedgekeurd';
+                    $progress->setTotalLessons($totalLessons);
+
+                    if ($progressModule->getId() === $module->getId()) {
+                        $progress
+                            ->setLesson($lesson)
+                            ->setCompletedLesson(min($completedLessons, $totalLessons));
+
+                        if (!$wasApproved) {
+                            $progress->setStatus(
+                                $totalLessons > 0 && $completedLessons >= $totalLessons
+                                    ? 'Voltooid'
+                                    : 'Bezig'
+                            );
+                        }
+                    }
+
+                    $entityManager->persist($progress);
                 }
             }
-        $formJ->handleRequest($request);
-        if ($formJ->isSubmitted() && $formJ->isValid() && $request->isMethod('POST') ) {
-            $submission = $form->getData();
-            if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
-                $entityManager->persist($submission);
-                $entityManager->flush();
-                $this->addFlash('success', 'Opdracht verstuurd.');
 
-                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-            } else {
-                $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
-                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-            }
-        }
-        $formO->handleRequest($request);
-        if ($formO->isSubmitted() && $formO->isValid() && $request->isMethod('POST') ) {
-            $submission = $form->getData();
-            if ($submission->getUser()->getId() == $user->getId() && $submission->getLesson()->getId() == $lesson->getId() && $submission->getAssignment()->getId() == $assignments->getId()) {
-                $entityManager->persist($submission);
-                $entityManager->flush();
-                $this->addFlash('success', 'Opdracht verstuurd.');
+            $entityManager->persist($submission);
+            $entityManager->flush();
 
-                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-            } else {
-                $this->addFlash('danger', 'Bewerk dingen niet in inspect element!');
-                return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-            }
+            $this->addFlash('success', 'Opdracht verstuurd.');
+
+            return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
         }
-        if ($alreadySubmitted) {
-            $this->addFlash('info', 'Je hebt deze opdracht al gemaakt.');
-            return $this->redirectToRoute('app_lesson', ['id' => $assignments->getLesson()->getId()]);
-        }
-        return $this->render('lesson/opdracht.html.twig',[
+
+        return $this->render('lesson/opdracht.html.twig', [
             'form' => $form,
-            'formJ' => $formJ,
-            'formO' => $formO,
-            'assignment' => $assignments,
+            'assignment' => $assignment,
             'lesson' => $lesson,
         ]);
     }
 }
-

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Vak;
 use App\Form\UserType;
+use App\Repository\SubmissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,10 +24,26 @@ final class HomeController extends AbstractController
         'vakken' => $vakken,
     ]);
     }
+
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/Profiel', name: 'app_profile')]
-    public function profiel(): Response
+    public function profiel(SubmissionRepository $submissionRepository): Response
     {
-        return $this->render('home/profile.html.twig');
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $niveau = $user->getNiveau();
+        $modules = $niveau?->getModules()->toArray() ?? [];
+        $completedAssignmentIds = $niveau === null
+            ? []
+            : $submissionRepository->findCompletedAssignmentIdsForUserAndNiveau($user, $niveau);
+
+        return $this->render('home/profile.html.twig', [
+            'modules' => $modules,
+            'completedAssignmentIds' => array_fill_keys($completedAssignmentIds, true),
+        ]);
     }
     #[Route('/Profiel/Update/{id}', name: 'app_profile_update')]
     public function update(
@@ -36,7 +53,20 @@ final class HomeController extends AbstractController
         int $id
     ): Response
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($currentUser->getId() !== $id) {
+            throw $this->createAccessDeniedException('You can only edit your own profile.');
+        }
+
         $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException('User not found.');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,7 +82,7 @@ final class HomeController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
         return $this->render('home/profileupdate.html.twig',[
-            'form' => $form
+            'form' => $form,
         ]);
     }
 }

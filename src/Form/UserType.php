@@ -31,8 +31,6 @@ class UserType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
 
             ])
-            ->add('firstName')
-            ->add('lastName')
         ;
     }
 

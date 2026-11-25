@@ -56,6 +56,9 @@
                         {% endif %}
 
                         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                          <li class="nav-item">
+                                <a class="nav-link site-nav-link{% if app.request.attributes.get('_route') == 'app_student_progress' %} active{% endif %}" href="{{ path('app_student_progress') }}">Studentvoortgang</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link site-nav-link" href="{{ path('admin') }}">Admin</a>
                             </li>
@@ -64,6 +67,9 @@
                         {% if app.user and 'ROLE_TEACHER' in app.user.roles %}
                             <li class="nav-item">
                                 <a class="nav-link site-nav-link" href="{{ path('teacher') }}">Leerkracht</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link site-nav-link{% if app.request.attributes.get('_route') == 'app_student_progress' %} active{% endif %}" href="{{ path('app_student_progress') }}">Studentvoortgang</a>
                             </li>
                         {% endif %}
                     </ul>
