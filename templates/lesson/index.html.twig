@@ -123,11 +123,13 @@
                                         <span aria-hidden="true">&rarr;</span>
                                     </a>
                                     {% for submission in lesson.submissions %}
+                                        {% if submission.user.id == app.user.id %}
                                             {% if submission.assignment.id == assignment.id %}
                                                 <a href="{{ path('app_lesson_feedback', {id: submission.id}) }}" class="btn lesson-question-button">
                                                     Feedback
                                                     <span aria-hidden="true">&rarr;</span>
                                                 </a>
+                                                {% endif %}
                                     {% endif %}
                                     {% endfor %}
                                 </div>

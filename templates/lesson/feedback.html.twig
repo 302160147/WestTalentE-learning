@@ -33,6 +33,8 @@
                                 {% elseif options.isCorrect !== submissions.answerText %}
                                     <div>Jammer genoeg was jouw antwoord niet correct</div>
                                     {{ submissions.feedback }}
+                                    {% else %}
+                                    <div>Er is nog geen feedback gegeven.</div>
                                 {% endif %}
                         {% endif %}
                         {% endif %}
