@@ -43,6 +43,11 @@ class Assignment
         $this->submissions = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->question;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

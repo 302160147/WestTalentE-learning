@@ -39,7 +39,7 @@ class AnswerOptionCrudController extends AbstractCrudController
             ->setLabel('Wat is het goede antwoord');
 
         yield AssociationField::new('assignment')
-            ->autocomplete(callback: static fn (assignment $assignment): string => sprintf('%s', $assignment->getId()),)
+            ->autocomplete(callback: static fn (assignment $assignment): string => sprintf('%s', $assignment->getQuestion()),)
             ->setRequired(true);
     }
 
