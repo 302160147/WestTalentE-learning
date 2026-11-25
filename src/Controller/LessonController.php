@@ -102,5 +102,25 @@ class LessonController extends AbstractController
             'lesson' => $lesson,
         ]);
     }
+    #[Route('/lesson/feedback/{id}', name: 'app_lesson_feedback')]
+    public function feedback(int $id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+
+        $submissions = $entityManager->getRepository(Submission::class)->find($id);
+        $assignment = $submissions->getAssignment();
+//        $user = $this->getUser();
+//        $submitted = $entityManager->getRepository(Submission::class)->findOneBy(['user' => $user, 'assignment' => $assignment]);
+
+//        if (!$submitted) {
+//            $this->addFlash('info', 'Je moet eerst deze vraag nog maken.');
+//            return $this->redirectToRoute('app_lesson', ['id' => $assignment->getLesson()->getId()]);
+//        }
+
+        return $this->render('lesson/feedback.html.twig', [
+            'assignments' => $assignment,
+            'submissions' => $submissions,
+
+        ]);
+    }
 }
 
