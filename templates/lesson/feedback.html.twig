@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}West Talent E-Learning{% endblock %}
+
+{% block body %}
+    <main class="home-page">
+        <div class="container py-4 py-lg-5">
+            <a class="assignment-back-link" href="{{ path('app_lesson', {'id': assignments.lesson.id}) }}">
+                <span aria-hidden="true">&larr;</span>
+                Terug naar les
+            </a>
+            <header class="home-hero">
+                <div class="home-hero-copy">
+                    <p class="home-eyebrow">West Talent E-Learning</p>
+                </div>
+            </header>
+            <section class="home-courses" aria-labelledby="courses-heading">
+                <div class="home-section-heading">
+                    <div>
+                        <h2 id="courses-heading">{{ assignments.question }}</h2>
+                    </div>
+                </div>
+                <div class="row g-3 g-lg-4">
+                    <br>
+                    {% for options in assignments.answeroptions %}
+                        {% if  assignments.id  == options.assignment.id%}
+                            {% if options.isCorrect !== null %}
+                                <div class="border rounded">{{ submissions.answerText }}</div>
+
+                                {% if options.isCorrect == submissions.answerText %}
+                                    <div>Je heb deze vraag goed geantwoord</div>
+                                    {{ submissions.feedback }}
+                                {% elseif options.isCorrect !== submissions.answerText %}
+                                    <div>Jammer genoeg was jouw antwoord niet correct</div>
+                                    {{ submissions.feedback }}
+                                    {% else %}
+                                    <div>Er is nog geen feedback gegeven.</div>
+                                {% endif %}
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+{% endblock %}
