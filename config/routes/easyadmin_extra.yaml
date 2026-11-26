@@ -1,0 +1,3 @@
+easyadmin_extra:
+    resource: .
+    type: jorisdugue_easyadmin_extra.routes

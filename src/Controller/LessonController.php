@@ -55,7 +55,7 @@ class LessonController extends AbstractController
 
         $lesson = $assignment->getLesson();
         if ($submissionRepository->findOneBy(['user' => $user, 'assignment' => $assignment])) {
-            $this->addFlash('info', 'You have already completed this assignment.');
+            $this->addFlash('info', 'Je hebt deze vraag al gemaakt.');
 
             return $this->redirectToRoute('app_lesson', ['id' => $lesson->getId()]);
         }
@@ -148,13 +148,6 @@ class LessonController extends AbstractController
 
         $submissions = $entityManager->getRepository(Submission::class)->find($id);
         $assignment = $submissions->getAssignment();
-//        $user = $this->getUser();
-//        $submitted = $entityManager->getRepository(Submission::class)->findOneBy(['user' => $user, 'assignment' => $assignment]);
-
-//        if (!$submitted) {
-//            $this->addFlash('info', 'Je moet eerst deze vraag nog maken.');
-//            return $this->redirectToRoute('app_lesson', ['id' => $assignment->getLesson()->getId()]);
-//        }
 
         return $this->render('lesson/feedback.html.twig', [
             'assignments' => $assignment,

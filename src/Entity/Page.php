@@ -76,6 +76,18 @@ class Page
         return $this->img;
     }
 
+    public function getImgUrl(): ?string
+    {
+        if (!$this->img){
+            return null;
+        }
+
+        if (strpos($this->img, '/') !== false){
+            return $this->img;
+        }
+
+        return sprintf('/images/%s', $this->img);
+    }
     public function setImg(?string $img): static
     {
         $this->img = $img;
