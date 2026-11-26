@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Studentprogress;
+use App\Repository\ModuleRepository;
 use App\Repository\StudentprogressRepository;
 use App\Repository\SubmissionRepository;
 use App\Repository\UserRepository;
@@ -140,11 +141,16 @@ class StudentProgressController extends AbstractController
         $status = $request->request->get('status');
         $token = $request->request->get('_token');
 
+        $studentNiveau = $student?->getNiveau();
+        $moduleNiveau = $module?->getNiveau();
+
         if (
             !$student
             || !in_array('ROLE_STUDENT', $student->getRoles(), true)
             || !$module
-            || $student->getNiveau()?->getId() !== $module->getNiveau()?->getId()
+            || !$studentNiveau
+            || !$moduleNiveau
+            || $studentNiveau->getId() !== $moduleNiveau->getId()
         ) {
             throw $this->createNotFoundException('Student or module not found.');
         }
