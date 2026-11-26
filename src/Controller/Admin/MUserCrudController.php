@@ -3,18 +3,20 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\FilterFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use JorisDugue\EasyAdminExtraBundle\Attribute\AdminImport;
 use JorisDugue\EasyAdminExtraBundle\Contract\ImportFieldsProviderInterface;
-use JorisDugue\EasyAdminExtraBundle\Field\ChoiceImportField;
-use JorisDugue\EasyAdminExtraBundle\Field\DateImportField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use JorisDugue\EasyAdminExtraBundle\Field\TextImportField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -25,6 +27,33 @@ class MUserCrudController extends AbstractCrudController implements ImportFields
     public static function getEntityFqcn(): string
     {
         return User::class;
+    }
+
+    public function export(AdminContext $context, CsvExporter $csvExporter)
+    {
+        $fields = new FieldCollection($this->configureFields(Crud::PAGE_INDEX));
+        $filters = $this->container->get(FilterFactory::class)->create($context->getCrud()->getFiltersConfig(), $fields, $context->getEntity());
+        $queryBuilder = $this->createIndexQueryBuilder($context->getSearch(), $context->getEntity(), $fields, $filters);
+
+        return $csvExporter->createResponeFromQueryBuilder(
+                    $queryBuilder,
+                    $fields,
+                    ''
+        );
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+
+        $exportAction = Action::new('export')
+            ->linkToCrudAction('export')
+            ->addCssClass('btn btn-success')
+            ->setIcon('fa fa-download')
+            ->createAsGlobalAction();
+
+        return parent::configureActions($actions)
+
+            ->add(Crud::PAGE_INDEX, $exportAction);
     }
 
     public function configureFields(string $pageName): iterable

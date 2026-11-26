@@ -108,6 +108,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-chartjs" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-twig-component" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/html-extra" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/handcraftedinthealps/goodby-csv" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jorisdugue/easyadmin-extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maennchen/zipstream-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
