@@ -259,7 +259,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         gc_divisor?: scalar|Param|null,
  *         gc_probability?: scalar|Param|null,
  *         gc_maxlifetime?: scalar|Param|null,
- *         save_path?: scalar|Param|null, // Defaults to "%kernel.cache_dir%/sessions" if the "handler_id" option is not null.
+ *         save_path?: scalar|Param|null, // Defaults to "%kernel.share_dir%/sessions" if the "handler_id" option is not null.
  *         metadata_update_threshold?: int|Param, // Seconds to wait between 2 session metadata updates. // Default: 0
  *     },
  *     request?: bool|array{ // Request configuration
@@ -522,7 +522,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         mock_response_factory?: scalar|Param|null, // `true` to always return empty 200 responses, or the id of the service to use to generate mock responses - which should be either an invokable or an iterable.
  *         scoped_clients?: array<string, Param|string|array{ // Default: []
- *             scope?: scalar|Param|null, // The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead.
+ *             scope?: scalar|Param|null, // The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead. The regular expression should end with a "/", for example "https://api\.github\.com/", so that it doesn't match other hosts.
  *             base_uri?: scalar|Param|null, // The URI to resolve relative URLs, following rules in RFC 3985, section 2.
  *             auth_basic?: scalar|Param|null, // An HTTP Basic authentication "username:password".
  *             auth_bearer?: scalar|Param|null, // A token enabling HTTP Bearer authorization.
@@ -1492,6 +1492,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         collect_components?: bool|Param, // Collect components instances // Default: true
  *     },
  * }
+ * @psalm-type JorisDugueEasyadminExtraConfig = array{
+ *     export?: array{
+ *         action_display?: "buttons"|"dropdown"|Param, // Default: "buttons"
+ *     },
+ *     discovery_paths?: list<scalar|Param|null>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1507,6 +1513,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_extra?: TwigExtraConfig,
  *     symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *     twig_component?: TwigComponentConfig,
+ *     joris_dugue_easyadmin_extra?: JorisDugueEasyadminExtraConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1523,6 +1530,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         twig_component?: TwigComponentConfig,
+ *         joris_dugue_easyadmin_extra?: JorisDugueEasyadminExtraConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1539,6 +1547,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         twig_component?: TwigComponentConfig,
+ *         joris_dugue_easyadmin_extra?: JorisDugueEasyadminExtraConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1555,6 +1564,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         twig_component?: TwigComponentConfig,
+ *         joris_dugue_easyadmin_extra?: JorisDugueEasyadminExtraConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

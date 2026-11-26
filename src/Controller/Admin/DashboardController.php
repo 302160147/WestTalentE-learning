@@ -53,6 +53,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(AnswerOptionCrudController::class, 'Vragen', 'fa fa-tasks');
         yield MenuItem::linkTo(SubmissionCrudController::class, 'Feedback', 'fa fa-check');
         yield MenuItem::linkTo(PageCrudController::class, 'pagina', 'fa fa-folder-open');
+        yield MenuItem::linkTo(MUserCrudController::class, 'Importeer meerdere studenten', 'fa fa-users');
+
     }
 
     public function configureActions(): Actions

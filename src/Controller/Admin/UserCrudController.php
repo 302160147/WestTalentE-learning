@@ -11,9 +11,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use JorisDugue\EasyAdminExtraBundle\Contract\ImportFieldsProviderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
+
 
 
 class UserCrudController extends AbstractCrudController
@@ -73,7 +75,6 @@ class UserCrudController extends AbstractCrudController
 
         yield ChoiceField::new('roles')
             ->setLabel('rol')
-            ->allowMultipleChoices()
             ->renderAsBadges([
                 'ROLE_ADMIN' => 'danger',
                 'ROLE_EDITOR' => 'warning',
@@ -84,8 +85,25 @@ class UserCrudController extends AbstractCrudController
                 'Teacher' => 'ROLE_TEACHER',
                 'Student' => 'ROLE_STUDENT',
             ]);
-        yield IdField::new('totalLessons')
-            ->onlyOnIndex();
-
     }
+//    public static function getImportFields(?string $importSet = null): array
+//    {
+//        return [
+//            TextImportField::new('email'),
+//            ChoiceImportField::new('roles')
+//                ->setChoices([
+//                    'Teacher' => 'ROLE_TEACHER',
+//                    'Student' => 'ROLE_STUDENT',
+//                ]),
+//            TextImportField::new('password'),
+//            TextImportField::new('firstName'),
+//            TextImportField::new('lastName'),
+//            ChoiceImportField::new('niveau.id')
+//                ->setChoices([
+//                    'Niveau 2' => '2',
+//                    'Niveau 3' => '3',
+//                    'Niveau 4' => '4',
+//                ]),
+//        ];
+//    }
 }
