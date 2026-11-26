@@ -86,6 +86,10 @@
                                             {% endif %}
                                             {% if page.content %}
                                                 <div>{{ page.content|nl2br }}</div>
+                                                {% if page.img %}
+                                                    {% set imageName = page.img|split('/')|last %}
+                                                    <img src="{{ asset('images/' ~ imageName) }}" width="250px">
+                                                    {% endif %}
                                             {% endif %}
                                         </section>
                                     {% endfor %}

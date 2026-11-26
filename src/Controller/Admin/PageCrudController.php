@@ -33,7 +33,8 @@ class PageCrudController extends AbstractCrudController
             ->setLabel('Inhoud');
 
         yield ImageField::new('img')->setUploadDir('assets/images')
-            ->setLabel('foto');
+            ->setLabel('foto')
+            ->setBasePath('/images/');
 
 
         yield AssociationField::new('lesson')
